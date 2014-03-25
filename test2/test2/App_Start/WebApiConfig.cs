@@ -25,7 +25,8 @@ namespace test2
             // For more information, refer to: http://www.asp.net/web-api
             //config.EnableSystemDiagnosticsTracing();
 
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            //  Force Json output
+            //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
         }
     }
 }
