@@ -7,8 +7,11 @@ namespace test2.Models
 {
     public class AlbumModel
     {
-        public string Title { get; set; }
-        public string Artist { get; set; }
-        public string Genre { get; set; }
+        public string Album { get; set; }       //  Title name of the Album
+        public string Artist { get; set; }      //  Name of the Artist
+        public int DiscNumber { get; set; }
+        public string Label { get; set; }
+        public double AlbumValue { get; set; }
+
     }
 }
