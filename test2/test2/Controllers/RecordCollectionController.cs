@@ -34,7 +34,13 @@ namespace test2.Controllers
             new GenreModel {Artist = "Mr. Scruff", Album = "Trouser Jazz", DiscNo = 1, Genre_01 = "Funk", Genre_02 = "Future Jazz"}
         };
 
-        // GET: /Album/
+        // POST Methods - Create/Add Data
+
+        // PUT Methods - Update Data
+
+        // DELETE Methods - Delete Data
+
+        // GET Methods - Read Data
         public IEnumerable<AlbumModel> GetAllAlbums()
         {
             return albums;                                                   // 200 OK, listings serialized in response body
@@ -51,7 +57,7 @@ namespace test2.Controllers
 
             foreach(AlbumModel al in albums)
             {
-                if(al.Album.ToUpper().Equals(albumName.ToUpper()))
+                if(al.Album.ToUpper().Equals(albumName.ToUpper()) && al.Album != null)
                 {
                     foundMatch = true;
                     artistList = al.Artist;
@@ -74,7 +80,7 @@ namespace test2.Controllers
 
             foreach (AlbumModel al in albums)
             {
-                if (al.Artist.ToUpper().Equals(artistName.ToUpper()))
+                if (al.Artist.ToUpper().Equals(artistName.ToUpper()) && al.Artist != null)
                 {
                     foundMatch = true;
                     albumList.Add(al.Album);
