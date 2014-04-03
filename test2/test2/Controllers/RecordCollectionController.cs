@@ -27,11 +27,11 @@ namespace test2.Controllers
             new TrackModel {NumberOfTracks = 2, Track_01_Title = "	Here We Go", Track_02_Title = "Sweetsmoke", Artist = "Mr. Scruff", Album = "Trouser Jazz", DiscNumber = 1}
         };
 
-        static List<GenresModel> genres = new List<GenresModel>()
+        static List<GenreModel> genres = new List<GenreModel>()
         {
-            new GenresModel {Artist = "Dave Nolan", Album = "EP-01", DiscNo = 1, Genre_01 = "Deep House", Genre_02 = "Tech House"},
-            new GenresModel {Artist = "Kraftwerk", Album = "Computer World", DiscNo = 1, Genre_01 = "Electronic"},
-            new GenresModel {Artist = "Mr. Scruff", Album = "Trouser Jazz", DiscNo = 1, Genre_01 = "Funk", Genre_02 = "Future Jazz"}
+            new GenreModel {Artist = "Dave Nolan", Album = "EP-01", DiscNo = 1, Genre_01 = "Deep House", Genre_02 = "Tech House"},
+            new GenreModel {Artist = "Kraftwerk", Album = "Computer World", DiscNo = 1, Genre_01 = "Electronic"},
+            new GenreModel {Artist = "Mr. Scruff", Album = "Trouser Jazz", DiscNo = 1, Genre_01 = "Funk", Genre_02 = "Future Jazz"}
         };
 
         // GET: /Album/
@@ -67,7 +67,7 @@ namespace test2.Controllers
 
 
         //public IEnumerable<String> GetAlbumFromArtist(string artistName)
-        public IEnumerable<String> GetAlbumFromArtist(string artistName)
+        public IEnumerable<String> GetAlbumsFromArtist(string artistName)
         {
             bool foundMatch = false;
             List<String> albumList = new List<String>();    //  This will return a list of Albums associated with the Artist Name that was provided.
@@ -83,6 +83,82 @@ namespace test2.Controllers
             if (!foundMatch)
             {
                 albumList.Add("No Artist Found, with name: " + artistName);
+            }
+
+            return albumList;
+        }
+
+        public IEnumerable<String> GetAlbumsFromGenre(string genre01, string genre02 = "", string genre03 = "")
+        {
+            bool foundMatch = false;
+            List<String> albumList = new List<String>();
+
+            foreach (GenreModel ge in genres)
+            {
+                if (ge.Genre_02 != null && ge.Genre_03 != null)     //  If a GenreModel object contains a Genre_02 and Genre_03 property, then carry out this search.  If this check was not there, the program would crash as it would be check a string on a NULL property.
+                {
+                    if (
+                        ge.Genre_01.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre03.ToUpper()) ||
+                        ge.Genre_02.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_02.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_02.ToUpper().Equals(genre03.ToUpper()) ||
+                        ge.Genre_03.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_03.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_03.ToUpper().Equals(genre03.ToUpper())
+                       )
+                    {
+                        foundMatch = true;
+                        albumList.Add(ge.Album);
+                    }
+                }
+                else if (ge.Genre_02 != null && ge.Genre_03 == null)
+                {
+                    if (
+                        ge.Genre_01.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre03.ToUpper()) ||
+                        ge.Genre_02.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_02.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_02.ToUpper().Equals(genre03.ToUpper())
+                       )
+                    {
+                        foundMatch = true;
+                        albumList.Add(ge.Album);
+                    }
+
+                }
+                else if (ge.Genre_02 == null && ge.Genre_03 != null)
+                {
+                    if (
+                        ge.Genre_01.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre03.ToUpper()) ||
+                        ge.Genre_03.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_03.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_03.ToUpper().Equals(genre03.ToUpper())
+                       )
+                    {
+                        foundMatch = true;
+                        albumList.Add(ge.Album);
+                    }
+
+                }
+                else
+                {
+                    if ( ge.Genre_01.ToUpper().Equals(genre01.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre02.ToUpper()) || ge.Genre_01.ToUpper().Equals(genre03.ToUpper()) )
+                    {
+                        foundMatch = true;
+                        albumList.Add(ge.Album);
+                    }
+
+                }
+            }
+            if (!foundMatch)
+            {
+                if(genre02.Equals("") && genre03.Equals(""))
+                {
+                    albumList.Add("No Genre(s) Found: " + genre01);
+                }
+                else if (!genre02.Equals("") && genre03.Equals(""))
+                {
+                    albumList.Add("No Genre(s) Found: " + genre01 + ", " + genre02);
+                }
+                else if(genre02.Equals("") && !genre03.Equals(""))
+                {
+                    albumList.Add("No Genre(s) Found: " + genre01 + ", " + genre03);
+                }
+                else
+                {
+                    albumList.Add("No Genre(s) Found: " + genre01 + ", " + genre02 + ", " + genre03);
+                }
             }
 
             return albumList;

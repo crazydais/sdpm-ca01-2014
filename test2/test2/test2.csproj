@@ -166,7 +166,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AlbumModel.cs" />
-    <Compile Include="Models\GenresModel.cs" />
+    <Compile Include="Models\GenreModel.cs" />
     <Compile Include="Models\TrackModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
