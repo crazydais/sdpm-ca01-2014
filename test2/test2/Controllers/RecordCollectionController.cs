@@ -47,63 +47,44 @@ namespace test2.Controllers
         public string GetArtistFromAlbum(string albumName)
         {
             bool foundMatch = false;
+            string artistList = "";     //  This will return the artist name belonging to the album name that was provided
+
             foreach(AlbumModel al in albums)
             {
                 if(al.Album.ToUpper().Equals(albumName.ToUpper()))
                 {
                     foundMatch = true;
+                    artistList = al.Artist;
                 }      
             }
             if (!foundMatch)
             {
-                albumName = "No Album Found"; //  If 'albumName' doesn't match anything in the AlbumModel, then set it to the 'default value'
+                artistList = "No Album Found, with name: " + albumName;
             }
 
-            AlbumModel album = albums.FirstOrDefault(a => a.Album.ToUpper() == albumName.ToUpper());
-            string artistList;
-
-            if(album.Album.ToUpper().Equals(albumName.ToUpper()))
-            {
-                artistList = album.Artist;      // 200 OK, price serialized in response body
-            }
-            else
-            {
-                artistList = "Artist Not Found";
-            }
-            
-                return artistList;                                               
+            return artistList;                                               
         }
+
+
         //public IEnumerable<String> GetAlbumFromArtist(string artistName)
         public IEnumerable<String> GetAlbumFromArtist(string artistName)
         {
-            List<String> albumList = new List<String>();
-
             bool foundMatch = false;
+            List<String> albumList = new List<String>();    //  This will return a list of Albums associated with the Artist Name that was provided.
+
             foreach (AlbumModel al in albums)
             {
                 if (al.Artist.ToUpper().Equals(artistName.ToUpper()))
                 {
                     foundMatch = true;
+                    albumList.Add(al.Album);
                 }
             }
             if (!foundMatch)
             {
-                artistName = "No Artist Found"; //  If 'albumName' doesn't match anything in the AlbumModel, then set it to the 'default value'
-            }
-            
-            AlbumModel album = albums.FirstOrDefault(a => a.Artist.ToUpper() == artistName.ToUpper());
-            
-
-            if (album.Artist.ToUpper().Equals(artistName.ToUpper()))
-            {
-                albumList.Add(album.Album);
-            }
-            else
-            {
-                albumList.Add("Album Not Found");
+                albumList.Add("No Artist Found, with name: " + artistName);
             }
 
-            //return albumList;
             return albumList;
         }
     }
