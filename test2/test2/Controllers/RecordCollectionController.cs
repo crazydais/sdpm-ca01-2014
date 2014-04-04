@@ -23,6 +23,7 @@ namespace test2.Controllers
         static List<TrackModel>tracks = new List<TrackModel>()
         {
             new TrackModel {NumberOfTracks = 3, Track_01_Title = "M01234", Track_02_Title = "Dub Track", Track_03_Title = "It's Raining", Artist = "Dave Nolan", Album =  "EP-01", DiscNumber = 1 },
+            new TrackModel {NumberOfTracks = 3, Track_01_Title = "dave01", Track_02_Title = "dave2", Track_03_Title = "dave3", Artist = "Dave Nolan", Album =  "EP-01", DiscNumber = 2 },
             new TrackModel {NumberOfTracks = 3, Track_01_Title = "Computer World", Track_02_Title = "Pocket Calculator", Track_03_Title = "Numbers", Artist = "Kraftwerk", Album = "Computer World", DiscNumber = 1},
             new TrackModel {NumberOfTracks = 2, Track_01_Title = "	Here We Go", Track_02_Title = "Sweetsmoke", Artist = "Mr. Scruff", Album = "Trouser Jazz", DiscNumber = 1}
         };
@@ -45,12 +46,7 @@ namespace test2.Controllers
         {
             return albums;                                                   // 200 OK, listings serialized in response body
         }
-        /// <summary>
-        /// This method returns the artists name when the title of the album is given
-        /// </summary>
-        /// <param name="title"></param>
-        /// <returns></returns>
-        public string GetArtistFromAlbum(string albumName)
+        public string GetArtistFromAlbum(string albumName, bool getArtist)
         {
             bool foundMatch = false;
             string artistList = "";     //  This will return the artist name belonging to the album name that was provided
@@ -70,10 +66,7 @@ namespace test2.Controllers
 
             return artistList;                                               
         }
-
-
-        //public IEnumerable<String> GetAlbumFromArtist(string artistName)
-        public IEnumerable<String> GetAlbumsFromArtist(string artistName)
+        public IEnumerable<String> GetAlbumsFromArtist(string artistName, bool getAlbum)
         {
             bool foundMatch = false;
             List<String> albumList = new List<String>();    //  This will return a list of Albums associated with the Artist Name that was provided.
@@ -93,7 +86,61 @@ namespace test2.Controllers
 
             return albumList;
         }
+        public IEnumerable<String> GetTrackNamesFromAlbum(string albumName, int discNumber = 0, bool getTracks = true)
+        {
+            bool foundMatch = false;
+            List<String> trackList = new List<String>();
 
+            foreach (TrackModel tr in tracks)
+            {
+                if (tr.Album.ToUpper().Equals(albumName.ToUpper()) && tr.Album != null)
+                {
+                    foundMatch = true;
+                    if (discNumber == 0)
+                    {
+                        if (tr.Track_01_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 01: " + tr.Track_01_Title); }
+                        if (tr.Track_02_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 02: " + tr.Track_02_Title); }
+                        if (tr.Track_03_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 03: " + tr.Track_03_Title); }
+                        if (tr.Track_04_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 04: " + tr.Track_04_Title); }
+                        if (tr.Track_05_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 05: " + tr.Track_05_Title); }
+                        if (tr.Track_01_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 01: " + tr.Track_01_Title); }
+                        if (tr.Track_02_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 02: " + tr.Track_02_Title); }
+                        if (tr.Track_03_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 03: " + tr.Track_03_Title); }
+                        if (tr.Track_04_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 04: " + tr.Track_04_Title); }
+                        if (tr.Track_05_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 05: " + tr.Track_05_Title); }
+                    }
+                    else if (discNumber == 1)
+                    {
+                        if (tr.Track_01_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 01: " + tr.Track_01_Title); }
+                        if (tr.Track_02_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 02: " + tr.Track_02_Title); }
+                        if (tr.Track_03_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 03: " + tr.Track_03_Title); }
+                        if (tr.Track_04_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 04: " + tr.Track_04_Title); }
+                        if (tr.Track_05_Title != null && tr.DiscNumber == 1) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 05: " + tr.Track_05_Title); }
+                    }
+                    else if (discNumber == 2)
+                    {
+
+                        if (tr.Track_01_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 01: " + tr.Track_01_Title); }
+                        if (tr.Track_02_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 02: " + tr.Track_02_Title); }
+                        if (tr.Track_03_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 03: " + tr.Track_03_Title); }
+                        if (tr.Track_04_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 04: " + tr.Track_04_Title); }
+                        if (tr.Track_05_Title != null && tr.DiscNumber == 2) { trackList.Add("Disc No." + tr.DiscNumber + ". Track 05: " + tr.Track_05_Title); }
+                    }
+                    else if(discNumber != tr.DiscNumber)
+                    {
+                        trackList.Add("No Disc Found, with number: " + discNumber);
+                        break;
+                    }
+                    
+                }
+            }
+            if (!foundMatch)
+            {
+                trackList.Add("No Album Found, with name: " + albumName);
+            }
+
+            return trackList;
+        }
         public IEnumerable<String> GetAlbumsFromGenre(string genre01, string genre02 = "", string genre03 = "")
         {
             bool foundMatch = false;
@@ -169,5 +216,7 @@ namespace test2.Controllers
 
             return albumList;
         }
+
+        
     }
 }

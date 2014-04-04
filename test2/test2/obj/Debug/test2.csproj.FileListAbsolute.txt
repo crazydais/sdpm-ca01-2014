@@ -139,4 +139,3 @@ C:\Users\David\sdpm-ca01-2014\test2\test2\bin\zh-Hans\System.Spatial.resources.d
 C:\Users\David\sdpm-ca01-2014\test2\test2\bin\zh-Hant\System.Spatial.resources.dll
 C:\Users\David\sdpm-ca01-2014\test2\test2\obj\Debug\test2.dll
 C:\Users\David\sdpm-ca01-2014\test2\test2\obj\Debug\test2.pdb
-C:\Users\David\sdpm-ca01-2014\test2\test2\obj\Debug\test2.csprojResolveAssemblyReference.cache
