@@ -49,10 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data Classes\AlbumModel.cs" />
-    <Compile Include="Data Classes\GenreData.cs" />
+    <Compile Include="Data Classes\GenreModel.cs" />
+    <Compile Include="Data Classes\MasterModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data Classes\TrackData.cs" />
+    <Compile Include="Data Classes\TrackModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

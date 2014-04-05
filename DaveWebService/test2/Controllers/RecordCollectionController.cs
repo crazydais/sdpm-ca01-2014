@@ -36,30 +36,66 @@ namespace daveWebService.Controllers
         };
 
         // POST Methods - Create/Add Data
-        public HttpResponseMessage PostAddAlbum(AlbumModel album)
-        //public string PostAddListing(AlbumModel album, TrackModel track, GenreModel genre)
+        public HttpResponseMessage PostAddAlbum(MasterModel master)
         {
-            HttpResponseMessage response = Request.CreateResponse<AlbumModel>(HttpStatusCode.BadRequest, album);
+            HttpResponseMessage response = Request.CreateResponse<MasterModel>(HttpStatusCode.BadRequest, master);
             response.Content = new StringContent("Was Not Successfully Posted");
-            //string wasPosted = "Was Not Successfully Posted";
 
             if(ModelState.IsValid)
             {
-                if(!(albums.Exists(a => a.Album.ToUpper().Equals(album.Album.ToUpper()))))
+                if (!(albums.Exists(a => a.Album.ToUpper().Equals(master.MasterAlbum.Album.ToUpper()))))
                 {
-                    albums.Add(album);
-
-                    //wasPosted = "Was Successfully Posted";
-                    response = Request.CreateResponse<AlbumModel>(HttpStatusCode.Created, album);
+                    albums.Add(master.MasterAlbum);
+                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
                     response.Content = new StringContent("Was Successfully Posted");
                 }
-            }
+                if(!(genres.Exists(g => g.Album.ToUpper().Equals(master.MasterGenre.Album.ToUpper()))))
+                {
+                    genres.Add(master.MasterGenre);
+                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
+                    response.Content = new StringContent("Was Successfully Posted");
+                }
+                if(!(tracks.Exists(t => t.Album.ToUpper().Equals(master.MasterTrack.Album.ToUpper()))))
+                {
+                    tracks.Add(master.MasterTrack);
+                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
+                    response.Content = new StringContent("Was Successfully Posted");
+                }
 
-            //return wasPosted;
+            }
             return response;
         }
 
         // PUT Methods - Update Data
+        public HttpResponseMessage PutUpdateDetail(MasterModel master)
+        {
+            HttpResponseMessage response = Request.CreateResponse<MasterModel>(HttpStatusCode.BadRequest, master);
+            response.Content = new StringContent("Was Not Successfully Posted");
+
+            if (ModelState.IsValid)
+            {
+                if (!(albums.Exists(a => a.Album.ToUpper().Equals(master.MasterAlbum.Album.ToUpper()))))
+                {
+                    albums.Add(master.MasterAlbum);
+                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
+                    response.Content = new StringContent("Was Successfully Posted");
+                }
+                if (!(genres.Exists(g => g.Album.ToUpper().Equals(master.MasterGenre.Album.ToUpper()))))
+                {
+                    genres.Add(master.MasterGenre);
+                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
+                    response.Content = new StringContent("Was Successfully Posted");
+                }
+                if (!(tracks.Exists(t => t.Album.ToUpper().Equals(master.MasterTrack.Album.ToUpper()))))
+                {
+                    tracks.Add(master.MasterTrack);
+                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
+                    response.Content = new StringContent("Was Successfully Posted");
+                }
+
+            }
+            return response;
+        }
 
         // DELETE Methods - Delete Data
 
@@ -238,7 +274,5 @@ namespace daveWebService.Controllers
 
             return albumList;
         }
-
-        
     }
 }

@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace daveWebService.Models
+namespace DaveClientApp.Data_Classes
 {
-    public class GenreModel
+    class GenreModel
     {
         public string Genre_01 { get; set; }
         public string Genre_02 { get; set; }
         public string Genre_03 { get; set; }
 
-        
         public string Artist { get; set; }
-
         public string Album { get; set; }
-
         public int DiscNumber { get; set; }
     }
 }

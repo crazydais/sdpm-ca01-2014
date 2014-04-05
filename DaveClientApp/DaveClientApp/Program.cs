@@ -23,27 +23,25 @@ namespace DaveClientApp
     //  Vars
                 HttpResponseMessage response = new HttpResponseMessage();
                 AlbumModel newAlbum = new AlbumModel() { Artist = "Dave Nolan", Album = "Album", DiscNumber = 1, Label = "Unsigned", AlbumValue = 12.50 };
-                GenreData newGenre = new GenreData() { Album = "Album", Artist = "Dave Nolan", DiscNumber = 1, Genre_01 = "Techno", Genre_02 = "House", Genre_03 = "Electronic" };
-                TrackData newTrack = new TrackData() { Album = "Album", Artist = "Dave Nolan", DiscNumber = 1, NumberOfTracks = 5, Track_01_Title = "Track01", Track_02_Title = "Track02", Track_03_Title = "Track03", Track_04_Title = "Track04", Track_05_Title = "Track05" };
+                GenreModel newGenre = new GenreModel() { Album = "Album", Artist = "Dave Nolan", DiscNumber = 1, Genre_01 = "Techno", Genre_02 = "House", Genre_03 = "Electronic" };
+                TrackModel newTrack = new TrackModel() { Album = "Album", Artist = "Dave Nolan", DiscNumber = 1, NumberOfTracks = 5, Track_01_Title = "Track01", Track_02_Title = "Track02", Track_03_Title = "Track03", Track_04_Title = "Track04", Track_05_Title = "Track05" };
+                MasterModel newMaster = new MasterModel() {MasterAlbum = newAlbum, MasterGenre = newGenre, MasterTrack = newTrack };
                 //HttpResponseMessage responseAlbum;
                 //HttpResponseMessage responseGenre;
                 //HttpResponseMessage responseTrack;
 
 
-    //  POST - New Album
-                //response = client.PostAsJsonAsync("api/RecordCollection/", newAlbum).Result;
-                //if (response.IsSuccessStatusCode)                                               // 200 .. 299
-                //{
-                //    Uri newStockUri = response.Headers.Location;
-                //    //Console.WriteLine("URI for new resource: " + newStockUri.ToString());
-                //}
-                //else
-                //{
-                //    Console.WriteLine(response.StatusCode + " " + response.ReasonPhrase);
-                //}
-    //  Post - New Genre
-
-    //  Post - New Track
+    //  POST - New Master (Master encapsulates Album, Genre, and Track model classes)
+                response = client.PostAsJsonAsync("api/RecordCollection/", newMaster).Result;
+                if (response.IsSuccessStatusCode)                                               // 200 .. 299
+                {
+                    //  This line is not working for some reason... //Uri newMasterUri = response.Headers.Location.AbsoluteUri;          //response.Headers.Location;
+                    Console.WriteLine("URI for new resource: "); //+ response.Headers.Location.AbsoluteUri);
+                }
+                else
+                {
+                    Console.WriteLine(response.StatusCode + " " + response.ReasonPhrase);
+                }
 
     //  GET - 01
                 response = client.GetAsync("api/RecordCollection").Result;
