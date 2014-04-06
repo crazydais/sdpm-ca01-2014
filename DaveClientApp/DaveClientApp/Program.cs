@@ -30,6 +30,7 @@ namespace DaveClientApp
                 MasterModel newMaster = new MasterModel() { MasterAlbum = newAlbum, MasterGenre = newGenre, MasterTrack = newTrack };
 
                 HttpMethods Http = new HttpMethods();
+                CreateMasterModel Create = new CreateMasterModel();
 
                 //  Run Client
                 Console.WriteLine("~~~~ Start Client ~~~~");
@@ -68,6 +69,12 @@ namespace DaveClientApp
                 
                 albumId = "Trouser Jazz";
                 Http.GetArtistFromAlbumTitle(client, response, albumId);
+
+                Console.WriteLine("\n~~~~  ~~~~\n");
+                newMaster = Create.CreateMaster();
+                Http.PostNewAlbumToCollection(client, response, newMaster);
+                Http.GetAllCollection(client, response);
+                
 
                 Console.WriteLine("\n");
             }
