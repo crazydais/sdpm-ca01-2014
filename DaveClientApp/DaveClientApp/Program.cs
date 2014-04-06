@@ -15,8 +15,8 @@ namespace DaveClientApp
             try
             {
                 HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri("http://localhost:2454/");                             // base URL for API Controller i.e. RESTFul service
-
+                //client.BaseAddress = new Uri("http://localhost:2454/");                             // base URL for API Controller i.e. RESTFul service
+                client.BaseAddress = new Uri("http://daveyservice01.cloudapp.net/");
                 // add an Accept header for JSON
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -31,7 +31,7 @@ namespace DaveClientApp
                 //HttpResponseMessage responseTrack;
 
 
-                //  POST - New Master (Master encapsulates Album, Genre, and Track model classes)
+    //  POST - New Master (Master encapsulates Album, Genre, and Track model classes)
                 response = client.PostAsJsonAsync("api/RecordCollection/", newMaster).Result;
                 if (response.IsSuccessStatusCode)                                               // 200 .. 299
                 {
@@ -43,7 +43,7 @@ namespace DaveClientApp
                     Console.WriteLine("POST method was NOT successful, " + response.StatusCode + " " + response.ReasonPhrase);
                 }
 
-                //  GET - 01
+    //  GET - 01
                 response = client.GetAsync("api/RecordCollection").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -79,9 +79,9 @@ namespace DaveClientApp
                 //}
 
 
-                //  PUT
+    //  PUT
                 //PUT  api/RecordCollection?classType={classType}&albumId={albumId}&parameter={parameter}&update={update}
-                string classType = "ALBUM", albumId = "Daveys Hits", parameter = "ALBUM", update = "Electronic Sounds";          //  This is to update 
+                string classType = "ALBUM", albumId = "Computer World", parameter = "ALBUM", update = "Computer Welt";          //  This is to update 
                 response = client.PutAsJsonAsync("api/RecordCollection?classType=" + classType + "&albumId=" + albumId + "&parameter=" + parameter + "&update=" + update, "").Result;
 
                 if (response.IsSuccessStatusCode)                                               // 200 .. 299
@@ -94,7 +94,7 @@ namespace DaveClientApp
                     Console.WriteLine("PUT method was NOT successful" + response.StatusCode + " - " + response.ReasonPhrase + " - " + response.Content.ToString());
                 }
 
-                //  GET - 01
+    //  GET - 01
                 response = client.GetAsync("api/RecordCollection").Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -126,7 +126,7 @@ namespace DaveClientApp
                 }
                 else
                 {
-                    Console.WriteLine("DELETE method was NOT successful" + response.StatusCode + " - " + response.ReasonPhrase + " - " + response.Content.ToString());
+                    Console.WriteLine("DELETE method was NOT successful" + response.StatusCode + " - " + response.ReasonPhrase);
                 }
 
 
