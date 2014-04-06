@@ -154,6 +154,21 @@ namespace daveWebService.Controllers
         }
 
         // DELETE Methods - Delete Data
+        public void DeleteAlbum(String album)
+        {
+            bool found = albums.Exists(al => al.Album.ToUpper().Equals(album.ToUpper()));
+            if (found)
+            {
+                albums.RemoveAll(al => al.Album.ToUpper().Equals(album.ToUpper()));
+                genres.RemoveAll(ge => ge.Album.ToUpper().Equals(album.ToUpper()));
+                tracks.RemoveAll(tr => tr.Album.ToUpper().Equals(album.ToUpper()));
+                // default is to return 200 OK
+            }
+            else
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+        }
 
         // GET Methods - Read Data
         public IEnumerable<AlbumModel> GetAllAlbums()
