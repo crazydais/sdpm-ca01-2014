@@ -67,34 +67,90 @@ namespace daveWebService.Controllers
         }
 
         // PUT Methods - Update Data
-        public HttpResponseMessage PutUpdateDetail(MasterModel master)
+        public void PutDetailUpdate(string classType, string albumId, string parameter, string update)       //  Pass in a new master model, with the type of class we're interested in, with the specific album we can to change, with the particular parameter we want to change, with the new value
         {
-            HttpResponseMessage response = Request.CreateResponse<MasterModel>(HttpStatusCode.BadRequest, master);
-            response.Content = new StringContent("Was Not Successfully Posted");
-
             if (ModelState.IsValid)
             {
-                if (!(albums.Exists(a => a.Album.ToUpper().Equals(master.MasterAlbum.Album.ToUpper()))))
+                if (classType != "" && classType.ToUpper().Equals("ALBUM"))
                 {
-                    albums.Add(master.MasterAlbum);
-                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
-                    response.Content = new StringContent("Was Successfully Posted");
-                }
-                if (!(genres.Exists(g => g.Album.ToUpper().Equals(master.MasterGenre.Album.ToUpper()))))
-                {
-                    genres.Add(master.MasterGenre);
-                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
-                    response.Content = new StringContent("Was Successfully Posted");
-                }
-                if (!(tracks.Exists(t => t.Album.ToUpper().Equals(master.MasterTrack.Album.ToUpper()))))
-                {
-                    tracks.Add(master.MasterTrack);
-                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
-                    response.Content = new StringContent("Was Successfully Posted");
+                    bool foundMatch = false;
+                    AlbumModel albumToUpdate = new AlbumModel();
+                    List<String> albumList = new List<String>();    //  This will return a list of Albums associated with the Artist Name that was provided.
+
+                    foreach (AlbumModel al in albums)
+                    {
+                        if (al.Album.ToUpper().Equals(albumId.ToUpper()) && al.Album != null)
+                        {
+                            foundMatch = true;
+                            albumToUpdate = al;
+                            if (parameter.ToUpper().Equals("ALBUM")) { albumToUpdate.Album = update; }
+                            if (parameter.ToUpper().Equals("ARTIST")) { albumToUpdate.Artist = update; }
+                            if (parameter.ToUpper().Equals("DISCNUMBER")) { albumToUpdate.DiscNumber = Convert.ToInt32(update); }
+                            if (parameter.ToUpper().Equals("LABEL")) { albumToUpdate.Label = update; }
+                            if (parameter.ToUpper().Equals("VALUE")) { albumToUpdate.AlbumValue = Convert.ToDouble(update); }
+                        }
+                    }
+                    if (!foundMatch)
+                    {
+                        throw new HttpResponseException(HttpStatusCode.NotFound);
+                    }
                 }
 
+                if (classType != null && classType.ToUpper().Equals("GENRE"))
+                {
+                    bool foundMatch = false;
+                    GenreModel genreToUpdate = new GenreModel();
+                    List<String> albumList = new List<String>();    //  This will return a list of Albums associated with the Artist Name that was provided.
+
+                    foreach (GenreModel ge in genres)
+                    {
+                        if (ge.Album.ToUpper().Equals(albumId.ToUpper()) && ge.Album != null)
+                        {
+                            foundMatch = true;
+                            genreToUpdate = ge;
+                            if (parameter.ToUpper().Equals("ALBUM")) { genreToUpdate.Album = update; }
+                            if (parameter.ToUpper().Equals("ARTIST")) { genreToUpdate.Artist = update; }
+                            if (parameter.ToUpper().Equals("DISCNUMBER")) { genreToUpdate.DiscNumber = Convert.ToInt32(update); }
+                            if (parameter.ToUpper().Equals("GENRE01")) { genreToUpdate.Genre_01 = update; }
+                            if (parameter.ToUpper().Equals("GENRE02")) { genreToUpdate.Genre_02 = update; }
+                            if (parameter.ToUpper().Equals("GENRE03")) { genreToUpdate.Genre_03 = update; }
+                        }
+                    }
+                    if (!foundMatch)
+                    {
+                        throw new HttpResponseException(HttpStatusCode.NotFound);
+                    }
+                }
+
+                if(classType != null && classType.ToUpper().Equals("TRACK"))
+                {
+                    bool foundMatch = false;
+                    TrackModel trackToUpdate = new TrackModel();    //  Track parameter to update, this will be based on the parameter that is passed in.
+                    List<String> albumList = new List<String>();    //  This will return a list of Albums associated with the Artist Name that was provided.
+
+                    foreach (TrackModel tr in tracks)
+                    {
+                        if (tr.Album.ToUpper().Equals(albumId.ToUpper()) && tr.Album != null)
+                        {
+                            foundMatch = true;
+                            trackToUpdate = tr;
+                            if (parameter.ToUpper().Equals("ALBUM")) { trackToUpdate.Album = update; }
+                            if (parameter.ToUpper().Equals("ARTIST")) { trackToUpdate.Artist = update; }
+                            if (parameter.ToUpper().Equals("DISCNUMBER")) { trackToUpdate.DiscNumber = Convert.ToInt32(update); }
+                            if (parameter.ToUpper().Equals("NUMOFTRACKS")) { trackToUpdate.DiscNumber = Convert.ToInt32(update); }
+                            if (parameter.ToUpper().Equals("TRACK01")) { trackToUpdate.Track_01_Title = update; }
+                            if (parameter.ToUpper().Equals("TRACK02")) { trackToUpdate.Track_02_Title = update; }
+                            if (parameter.ToUpper().Equals("TRACK03")) { trackToUpdate.Track_03_Title = update; }
+                            if (parameter.ToUpper().Equals("TRACK04")) { trackToUpdate.Track_02_Title = update; }
+                            if (parameter.ToUpper().Equals("TRACK05")) { trackToUpdate.Track_03_Title = update; }
+                        }
+                    }
+                    if (!foundMatch)
+                    {
+                        throw new HttpResponseException(HttpStatusCode.NotFound);
+                    }
+                }
             }
-            return response;
         }
 
         // DELETE Methods - Delete Data
