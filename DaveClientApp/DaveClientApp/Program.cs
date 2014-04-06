@@ -4,19 +4,21 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 
 using DaveClientApp.Data_Classes;
+using DaveClientApp.Http_Methods;
 
 
 namespace DaveClientApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             try
             {
                 HttpClient client = new HttpClient();
-                //client.BaseAddress = new Uri("http://localhost:2454/");                             // base URL for API Controller i.e. RESTFul service
-                client.BaseAddress = new Uri("http://daveyservice01.cloudapp.net/");
+                client.BaseAddress = new Uri("http://localhost:2454/");                             // base URL for API Controller i.e. RESTFul service
+                //client.BaseAddress = new Uri("http://daveyservice01.cloudapp.net/");
+                
                 // add an Accept header for JSON
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -26,134 +28,48 @@ namespace DaveClientApp
                 GenreModel newGenre = new GenreModel() { Album = "Album", Artist = "Dave Nolan", DiscNumber = 1, Genre_01 = "Techno", Genre_02 = "House", Genre_03 = "Electronic" };
                 TrackModel newTrack = new TrackModel() { Album = "Album", Artist = "Dave Nolan", DiscNumber = 1, NumberOfTracks = 5, Track_01_Title = "Track01", Track_02_Title = "Track02", Track_03_Title = "Track03", Track_04_Title = "Track04", Track_05_Title = "Track05" };
                 MasterModel newMaster = new MasterModel() { MasterAlbum = newAlbum, MasterGenre = newGenre, MasterTrack = newTrack };
-                //HttpResponseMessage responseAlbum;
-                //HttpResponseMessage responseGenre;
-                //HttpResponseMessage responseTrack;
 
+                HttpMethods Http = new HttpMethods();
 
-    //  POST - New Master (Master encapsulates Album, Genre, and Track model classes)
-                response = client.PostAsJsonAsync("api/RecordCollection/", newMaster).Result;
-                if (response.IsSuccessStatusCode)                                               // 200 .. 299
-                {
-                    //  This line is not working for some reason... //Uri newMasterUri = response.Headers.Location.AbsoluteUri;          //response.Headers.Location;
-                    Console.WriteLine("POST method was SUCCESSFUL"); //+ response.Headers.Location.AbsoluteUri);
-                }
-                else
-                {
-                    Console.WriteLine("POST method was NOT successful, " + response.StatusCode + " " + response.ReasonPhrase);
-                }
+                //  Run Client
+                Console.WriteLine("~~~~ Start Client ~~~~");
 
-    //  GET - 01
-                response = client.GetAsync("api/RecordCollection").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    // read result 
+                Console.WriteLine("\n~~~~  ~~~~\n");
 
-                    //List<Albumclientapp.AlbumData> albums = new List<Albumclientapp.AlbumData>();
-                    var albums = response.Content.ReadAsAsync<IEnumerable<AlbumModel>>().Result;
-                    //var albums = responseAlbum.Content.ReadAsAsync<IEnumerable<AlbumData>>().Result;
-                    foreach (var al in albums)
-                    {
-                        Console.WriteLine(al.Album + " - " + al.Artist);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine(response.StatusCode + " " + response.ReasonPhrase);
-                }
-                //  GET - 02
-                //string albumName = "trouser jazz";
-                //string artistBool = "true";
-                //response = client.GetAsync("api/recordcollection?albumName=" + albumName + "&getArtist=" + artistBool).Result;
-                //if (response.IsSuccessStatusCode)
-                //{
-                //     read result 
-                //    var artist = response.Content.ReadAsAsync<String>().Result;
+                Http.GetAllCollection(client, response);
 
-                //        Console.WriteLine(artist);
+                Console.WriteLine("\n~~~~  ~~~~\n");
+                
+                Http.PostNewAlbumToCollection(client, response, newMaster);
 
-                //}
-                //else
-                //{
-                //    Console.WriteLine(response.StatusCode + " " + response.ReasonPhrase);
-                //}
+                Console.WriteLine("\n~~~~  ~~~~\n");
+                
+                Http.GetAllCollection(client, response);
 
+                Console.WriteLine("\n~~~~  ~~~~\n");
 
-    //  PUT
-                //PUT  api/RecordCollection?classType={classType}&albumId={albumId}&parameter={parameter}&update={update}
-                string classType = "ALBUM", albumId = "Computer World", parameter = "ALBUM", update = "Computer Welt";          //  This is to update 
-                response = client.PutAsJsonAsync("api/RecordCollection?classType=" + classType + "&albumId=" + albumId + "&parameter=" + parameter + "&update=" + update, "").Result;
+                string classType = "ALBUM", albumId = "Computer World", parameter = "ALBUM", update = "Computer Welt";          //  This is to update
+                Http.PutUpdateForParameter(client, response, classType, albumId, parameter, update);
 
-                if (response.IsSuccessStatusCode)                                               // 200 .. 299
-                {
-                    //  This line is not working for some reason... //Uri newMasterUri = response.Headers.Location.AbsoluteUri;          //response.Headers.Location;
-                    Console.WriteLine("PUT method was SUCCESSFUL"); //+ response.Headers.Location.AbsoluteUri);
-                }
-                else
-                {
-                    Console.WriteLine("PUT method was NOT successful" + response.StatusCode + " - " + response.ReasonPhrase + " - " + response.Content.ToString());
-                }
+                Console.WriteLine("\n~~~~  ~~~~\n");
 
-    //  GET - 01
-                response = client.GetAsync("api/RecordCollection").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    // read result 
+                Http.GetAllCollection(client, response);
 
-                    //List<Albumclientapp.AlbumData> albums = new List<Albumclientapp.AlbumData>();
-                    var albums = response.Content.ReadAsAsync<IEnumerable<AlbumModel>>().Result;
-                    //var albums = responseAlbum.Content.ReadAsAsync<IEnumerable<AlbumData>>().Result;
-                    foreach (var al in albums)
-                    {
-                        Console.WriteLine(al.Album + " - " + al.Artist);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine(response.StatusCode + " - " + response.ReasonPhrase + " - " + response.Content);
-                }
+                Console.WriteLine("\n~~~~  ~~~~\n");
+     
+                albumId = "Daveys Hits";
+                Http.DeleteAlbumFromCollection(client, response, albumId);
 
-    //  DELETE
+                Console.WriteLine("\n~~~~  ~~~~\n");
 
-                //  DELETE api/RecordCollection?album={album}  
-                albumId = "Trouser Jazz";          
-                response = client.DeleteAsync("api/RecordCollection?album=" + albumId).Result;
+                Http.GetAllCollection(client, response);
 
-                if (response.IsSuccessStatusCode)                                               // 200 .. 299
-                {
-                    //  This line is not working for some reason... //Uri newMasterUri = response.Headers.Location.AbsoluteUri;          //response.Headers.Location;
-                    Console.WriteLine("DELETE method was SUCCESSFUL"); //+ response.Headers.Location.AbsoluteUri);
-                }
-                else
-                {
-                    Console.WriteLine("DELETE method was NOT successful" + response.StatusCode + " - " + response.ReasonPhrase);
-                }
+                Console.WriteLine("\n~~~~  ~~~~\n");
+                
+                albumId = "Trouser Jazz";
+                Http.GetArtistFromAlbumTitle(client, response, albumId);
 
-
-    //  GET - 01
-                response = client.GetAsync("api/RecordCollection").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    // read result 
-
-                    //List<Albumclientapp.AlbumData> albums = new List<Albumclientapp.AlbumData>();
-                    var albums = response.Content.ReadAsAsync<IEnumerable<AlbumModel>>().Result;
-                    //var albums = responseAlbum.Content.ReadAsAsync<IEnumerable<AlbumData>>().Result;
-                    foreach (var al in albums)
-                    {
-                        Console.WriteLine(al.Album + " - " + al.Artist);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine(response.StatusCode + " - " + response.ReasonPhrase + " - " + response.Content);
-                }
-
-
-
-
-
-
+                Console.WriteLine("\n");
             }
             catch (Exception e)
             {
