@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using DaveClientApp;
+using DaveClientApp.Http_Methods;
 
 namespace UnitTests
 {

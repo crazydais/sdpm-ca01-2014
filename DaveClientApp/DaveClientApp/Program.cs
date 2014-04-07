@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-using DaveClientApp.Data_Classes;
-using DaveClientApp.Http_Methods;
+using DaveClientApp.DataClasses;
+using DaveClientApp.HttpMethods;
 
 
 namespace DaveClientApp
@@ -29,7 +29,7 @@ namespace DaveClientApp
                 TrackModel newTrack = new TrackModel() { Album = "Album", Artist = "Dave Nolan", DiscNumber = 1, NumberOfTracks = 5, Track_01_Title = "Track01", Track_02_Title = "Track02", Track_03_Title = "Track03", Track_04_Title = "Track04", Track_05_Title = "Track05" };
                 MasterModel newMaster = new MasterModel() { MasterAlbum = newAlbum, MasterGenre = newGenre, MasterTrack = newTrack };
 
-                HttpMethods Http = new HttpMethods();
+                DaveClientHttpMethods Http = new DaveClientHttpMethods();
                 CreateMasterModel Create = new CreateMasterModel();
 
                 //  Run Client
