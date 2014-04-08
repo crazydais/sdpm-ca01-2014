@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace daveWebService.Models
+namespace DaveWebService.Models
 {
     public class GenreModel
     {     

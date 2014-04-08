@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-using daveWebService.Models;
+using DaveWebService.Models;
 
-namespace daveWebService.Controllers
+namespace DaveWebService.Controllers
 {
     public class RecordCollectionController : ApiController
     {        
@@ -35,34 +35,34 @@ namespace daveWebService.Controllers
         };
 
         // POST Methods - Create/Add Data
-        public HttpResponseMessage PostAddAlbum(MasterModel master)
+        public MasterModel PostAddAlbum(MasterModel master)
         {
-            HttpResponseMessage response = Request.CreateResponse<MasterModel>(HttpStatusCode.BadRequest, master);
-            response.Content = new StringContent("Was Not Successfully Posted");
-
-            if(ModelState.IsValid)
+            MasterModel mm = master;
+            if(master.MasterAlbum.Album != "" && master.MasterGenre.Genre_01 != "" && master.MasterTrack.Track_01_Title != "")
             {
                 if (!(albums.Exists(a => a.Album.ToUpper().Equals(master.MasterAlbum.Album.ToUpper()))))
                 {
                     albums.Add(master.MasterAlbum);
-                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
-                    response.Content = new StringContent("Was Successfully Posted");
+                    mm.MasterAlbum = albums.Last();
                 }
                 if(!(genres.Exists(g => g.Album.ToUpper().Equals(master.MasterGenre.Album.ToUpper()))))
                 {
                     genres.Add(master.MasterGenre);
-                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
-                    response.Content = new StringContent("Was Successfully Posted");
+                    mm.MasterGenre = genres.Last();
                 }
                 if(!(tracks.Exists(t => t.Album.ToUpper().Equals(master.MasterTrack.Album.ToUpper()))))
                 {
                     tracks.Add(master.MasterTrack);
-                    response = Request.CreateResponse<MasterModel>(HttpStatusCode.Created, master);
-                    response.Content = new StringContent("Was Successfully Posted");
+                    mm.MasterTrack = tracks.Last();
                 }
-
             }
-            return response;
+            else
+            {
+                mm.MasterAlbum.Album = "Failed";
+                mm.MasterGenre.Genre_01 = "Failed";
+                mm.MasterTrack.Track_01_Title = "Failed";
+            }
+            return mm;
         }
 
         // PUT Methods - Update Data

@@ -7,9 +7,9 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Description;
-using daveWebService.Areas.HelpPage.Models;
+using DaveWebService.Areas.HelpPage.Models;
 
-namespace daveWebService.Areas.HelpPage
+namespace DaveWebService.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

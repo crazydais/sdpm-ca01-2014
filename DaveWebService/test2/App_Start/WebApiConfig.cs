@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Net.Http.Headers;
 
-namespace daveWebService
+namespace DaveWebService
 {
     public static class WebApiConfig
     {

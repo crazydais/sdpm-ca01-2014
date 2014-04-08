@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace daveWebService
+namespace DaveWebService
 {
     public class BundleConfig
     {

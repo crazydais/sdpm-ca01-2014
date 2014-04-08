@@ -1,9 +1,9 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using daveWebService.Areas.HelpPage.Models;
+using DaveWebService.Areas.HelpPage.Models;
 
-namespace daveWebService.Areas.HelpPage.Controllers
+namespace DaveWebService.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

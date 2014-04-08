@@ -12,6 +12,7 @@ namespace DaveClientApp.Tests
     [TestClass]
     public class UnitTest1
     {
+        public 
 
         [TestMethod]
         public void Test_GetArtistFromAlbumTitle()
