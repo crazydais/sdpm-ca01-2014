@@ -10,7 +10,7 @@ using DaveWebService.Models;
 namespace DaveWebService.Controllers
 {
     public class RecordCollectionController : ApiController
-    {        
+    {
         static List <AlbumModel>albums = new List <AlbumModel>() 
         { 
             new AlbumModel { Album = "EP-01", Artist = "Dave Nolan", Label = "Unsigned", AlbumValue = 10.50, DiscNumber = 1 },
