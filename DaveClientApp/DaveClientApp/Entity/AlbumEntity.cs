@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.WindowsAzure.StorageClient;
 
-namespace DaveWebService.Entity
+namespace DaveClientApp.Entity
 {
     public class AlbumEntity : TableServiceEntity
     {

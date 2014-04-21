@@ -6,36 +6,37 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-using DaveClientApp.DataClasses;
-
+using DaveClientApp.Entity;
 
 namespace DaveClientApp.HttpMethods
 {
-    public class DaveClientHttpMethods
+    public class WebServiceConnection
     {
         //  POST Methods
-        public void PostNewAlbumToCollection(HttpClient client, HttpResponseMessage response, MasterModel newMaster)
+        public void PostNewAlbumToCollection(HttpClient client, AlbumEntity album, GenreEntity genre, TrackEntity track)
         {
-            response = client.PostAsJsonAsync("api/RecordCollection/", newMaster).Result;
-            if (response.IsSuccessStatusCode)                                               // 200 .. 299
+            HttpResponseMessage response1 = client.PostAsJsonAsync("api/WebService?album=true", album).Result;
+            HttpResponseMessage response2 = client.PostAsJsonAsync("api/WebService?genre=true", genre).Result;
+            HttpResponseMessage response3 = client.PostAsJsonAsync("api/WebService?track=true", track).Result;
+            if (response1.IsSuccessStatusCode)                                               // 200 .. 299
             {
                 //  This line is not working for some reason... //Uri newMasterUri = response.Headers.Location.AbsoluteUri;          //response.Headers.Location;
-                Console.WriteLine("POST method was SUCCESSFUL: '" + newMaster.MasterAlbum.Album + "' was added"); //+ response.Headers.Location.AbsoluteUri);
+                Console.WriteLine("POST method was SUCCESSFUL: '" + album.Album + "' was added"); //+ response.Headers.Location.AbsoluteUri);
             }
             else
             {
-                Console.WriteLine("POST method was NOT successful, " + response.StatusCode + " " + response.ReasonPhrase);
+                Console.WriteLine("POST method was NOT successful, " + response1.StatusCode + " " + response1.ReasonPhrase);
             }
         }
 
         //  GET Methods
-        public List<AlbumModel> GetAllCollection(HttpClient client, HttpResponseMessage response)
+        public List<AlbumEntity> GetAllCollection(HttpClient client, HttpResponseMessage response)
         {
-            response = client.GetAsync("api/RecordCollection").Result;
-            List<AlbumModel> albums = new List<AlbumModel>();
+            response = client.GetAsync("api/WebService?showCollection=true").Result;
+            List<AlbumEntity> albums = new List<AlbumEntity>();
             if (response.IsSuccessStatusCode)
             {
-                albums = response.Content.ReadAsAsync<IEnumerable<AlbumModel>>().Result.ToList();
+                albums = response.Content.ReadAsAsync<IEnumerable<AlbumEntity>>().Result.ToList();
                 foreach (var al in albums)
                 {
                     Console.WriteLine(al.Album + " - " + al.Artist);
@@ -51,7 +52,7 @@ namespace DaveClientApp.HttpMethods
 
         public void GetArtistFromAlbumTitle(HttpClient client, HttpResponseMessage response, string albumName)
         {
-            response = client.GetAsync("api/recordcollection?albumName=" + albumName + "&getArtist=true").Result;
+            response = client.GetAsync("api/Webservice?getArtistFromAlbumName=" + albumName).Result;
             if (response.IsSuccessStatusCode)
             {
                 var artist = response.Content.ReadAsAsync<String>().Result;
@@ -65,7 +66,7 @@ namespace DaveClientApp.HttpMethods
         }
         public void GetAlbumsFromArtist(HttpClient client, HttpResponseMessage response, string artistName)
         {
-            response = client.GetAsync("api/recordcollection?artistName=" + artistName + "&getAlbum=true").Result;
+            response = client.GetAsync("api/Webservice?getAlbumsFromArtistName=" + artistName).Result;
             if (response.IsSuccessStatusCode)
             {
                 var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
@@ -78,9 +79,9 @@ namespace DaveClientApp.HttpMethods
             }
         }
 
-        public void GetTrackListFromAlbum (HttpClient client, HttpResponseMessage response, string albumName, int discNumber)
+        public void GetTrackListFromAlbum(HttpClient client, HttpResponseMessage response, string albumName)
         {
-            response = client.GetAsync("api/recordcollection?albumName=" + albumName + "&discNumber=" + discNumber +"&getTracks=true").Result;
+            response = client.GetAsync("api/Webservice?getTracksFromAlbumName=" + albumName).Result;
             if (response.IsSuccessStatusCode)
             {
                 var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
@@ -95,7 +96,7 @@ namespace DaveClientApp.HttpMethods
         //  GET api/RecordCollection?genre01={genre01}&genre02={genre02}&genre03={genre03}
         public void GetAlbumsWithGenres(HttpClient client, HttpResponseMessage response, string genre1, string genre2 = "", string genre3 = "")
         {
-            response = client.GetAsync("api/recordcollection?genre01=" + genre1 + "&genre02=" +genre2 + "&genre03=" +genre3).Result;
+            response = client.GetAsync("api/recordcollection?genre01=" + genre1 + "&genre02=" + genre2 + "&genre03=" + genre3).Result;
             if (response.IsSuccessStatusCode)
             {
                 var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
