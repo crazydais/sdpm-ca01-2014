@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 
-using DaveWebService.Models;
+using DaveWebService.Entity;
 
 namespace DaveWebService.Controllers
 {
@@ -18,6 +18,16 @@ namespace DaveWebService.Controllers
         public IQueryable<AlbumEntity> AlbumEntity
         {
             get { return this.CreateQuery<AlbumEntity>("AlbumEntity"); }
+        }
+
+        public IQueryable<GenreEntity> GenreEntity
+        {
+            get { return this.CreateQuery<GenreEntity>("GenreEntity"); }
+        }
+
+        public IQueryable<TrackEntity> TrackEntity
+        {
+            get { return this.CreateQuery<TrackEntity>("TrackEntity"); }
         }
     }
 }
