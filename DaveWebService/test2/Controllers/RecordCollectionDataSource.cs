@@ -51,22 +51,14 @@ namespace DaveWebService.Controllers
     //  Album Entity Queries
         public void DeleteAlbumFromAlbumEntity(string albumToDelete, string byArtist)
         {
-            var result = from al in this.context.AlbumEntity where al.PartitionKey == byArtist select al;
-            AlbumEntity entityToDelete = result.FirstOrDefault<AlbumEntity>();
-
-            if(entityToDelete.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+            foreach(AlbumEntity al in from als in this.context.AlbumEntity where als.PartitionKey == byArtist select als )
             {
-                this.context.DeleteObject(entityToDelete);
-                this.context.SaveChanges();
+                if (al.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+                {
+                    this.context.DeleteObject(al);
+                    this.context.SaveChanges();
+                }
             }
-            
-            //foreach (AlbumEntity al in this.context.AlbumEntity)
-            //{             
-            //    if(al.Album.ToUpper().Equals(AlbumToDelete.ToUpper()))
-            //    {
-            //        this.context.DeleteObject("AlbumEntity", al);
-            //    }
-            //}
         }
         public void PutUpdateForAlbum(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
         {
@@ -75,14 +67,17 @@ namespace DaveWebService.Controllers
 
             if (entityToUpdate.Album.ToUpper().Equals(albumToUpdate.ToUpper()))
             {
-                if (parameterToUpdate.ToUpper().Equals("ALBUM")) { entityToUpdate.Album = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("ARTIST")) { entityToUpdate.Artist = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("LABEL")) {entityToUpdate.Label = newValue;}
-                if (parameterToUpdate.ToUpper().Equals("VALUE")) {entityToUpdate.AlbumValue = Convert.ToDouble(newValue);}
+                if (parameterToUpdate.ToUpper().Equals("ALBUM")) { AlbumEntity updatedAlbum = new AlbumEntity { Album = newValue, Artist = entityToUpdate.Artist, AlbumValue = entityToUpdate.AlbumValue, Label = entityToUpdate.Label, Rating = entityToUpdate.Rating }; this.DeleteAlbumFromAlbumEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddAlbumToAlbumEntity(updatedAlbum); this.context.SaveChanges(); }
+                if (parameterToUpdate.ToUpper().Equals("ARTIST")) { AlbumEntity updatedAlbum = new AlbumEntity { Album = entityToUpdate.Album, Artist = newValue, AlbumValue = entityToUpdate.AlbumValue, Label = entityToUpdate.Label, Rating = entityToUpdate.Rating }; this.DeleteAlbumFromAlbumEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddAlbumToAlbumEntity(updatedAlbum); this.context.SaveChanges(); }
+                if (parameterToUpdate.ToUpper().Equals("LABEL"))  {entityToUpdate.Label = newValue;}
+                if (parameterToUpdate.ToUpper().Equals("VALUE"))  {entityToUpdate.AlbumValue = Convert.ToDouble(newValue);}
                 if (parameterToUpdate.ToUpper().Equals("RATING")) {entityToUpdate.Rating = Convert.ToDouble(newValue);}
 
-                this.context.UpdateObject(entityToUpdate);
-                this.context.SaveChanges();
+                if (parameterToUpdate.ToUpper().Equals("LABEL") || parameterToUpdate.ToUpper().Equals("VALUE") || parameterToUpdate.ToUpper().Equals("RATING"))
+                {
+                    this.context.UpdateObject(entityToUpdate);
+                    this.context.SaveChanges();
+                }
             }
 
         }
@@ -188,13 +183,13 @@ namespace DaveWebService.Controllers
     //  Genre Entity Queries
         public void DeleteGenreFromGenreEntity(string albumToDelete, string byArtist)
         {
-            var result = from ge in this.context.GenreEntity where ge.PartitionKey == byArtist select ge;
-            GenreEntity entityToDelete = result.FirstOrDefault<GenreEntity>();
-
-            if(entityToDelete.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+            foreach (GenreEntity ge in from ges in this.context.GenreEntity where ges.PartitionKey == byArtist select ges)
             {
-                this.context.DeleteObject(entityToDelete);
-                this.context.SaveChanges();
+                if (ge.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+                {
+                    this.context.DeleteObject(ge);
+                    this.context.SaveChanges();
+                }
             }
         }
         public void PutUpdateForGenre(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
@@ -204,14 +199,17 @@ namespace DaveWebService.Controllers
 
             if (entityToUpdate.Album.ToUpper().Equals(albumToUpdate.ToUpper()))
             {
-                if (parameterToUpdate.ToUpper().Equals("ALBUM"))    { entityToUpdate.Album = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("ARTIST"))   { entityToUpdate.Artist = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("ALBUM")) { GenreEntity updatedAlbum = new GenreEntity { Album = newValue, Artist = entityToUpdate.Artist, Genre_01 = entityToUpdate.Genre_01, Genre_02 = entityToUpdate.Genre_02, Genre_03 = entityToUpdate.Genre_03 }; this.DeleteGenreFromGenreEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddGenreToGenreEntity(updatedAlbum); this.context.SaveChanges(); }
+                if (parameterToUpdate.ToUpper().Equals("ARTIST")) { GenreEntity updatedAlbum = new GenreEntity { Album = entityToUpdate.Album, Artist = newValue, Genre_01 = entityToUpdate.Genre_01, Genre_02 = entityToUpdate.Genre_02, Genre_03 = entityToUpdate.Genre_03 }; this.DeleteGenreFromGenreEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddGenreToGenreEntity(updatedAlbum); this.context.SaveChanges(); }
                 if (parameterToUpdate.ToUpper().Equals("Genre_01")) { entityToUpdate.Genre_01 = newValue; }
                 if (parameterToUpdate.ToUpper().Equals("Genre_02")) { entityToUpdate.Genre_02 = newValue; }
                 if (parameterToUpdate.ToUpper().Equals("Genre_03")) { entityToUpdate.Genre_03 = newValue; }
 
-                this.context.UpdateObject(entityToUpdate);
-                this.context.SaveChanges();
+                if (parameterToUpdate.ToUpper().Equals("Genre_01") || parameterToUpdate.ToUpper().Equals("Genre_02") || parameterToUpdate.ToUpper().Equals("Genre_03"))
+                {
+                    this.context.UpdateObject(entityToUpdate);
+                    this.context.SaveChanges();
+                }
             }
         }
         public void AddGenreToGenreEntity(GenreEntity newGenre)
@@ -310,13 +308,13 @@ namespace DaveWebService.Controllers
     //  Track Entity Queries
         public void DeleteTrackFromTrackEntity(string albumToDelete, string byArtist)
         {
-            var result = from tr in this.context.TrackEntity where tr.PartitionKey == byArtist select tr;
-            TrackEntity entityToDelete = result.FirstOrDefault<TrackEntity>();
-
-            if (entityToDelete.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+            foreach (TrackEntity tr in from trs in this.context.TrackEntity where trs.PartitionKey == byArtist select trs)
             {
-                this.context.DeleteObject(entityToDelete);
-                this.context.SaveChanges();
+                if (tr.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+                {
+                    this.context.DeleteObject(tr);
+                    this.context.SaveChanges();
+                }
             }
         }
         public void PutUpdateForTrack(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
@@ -326,17 +324,20 @@ namespace DaveWebService.Controllers
 
             if (entityToUpdate.Album.ToUpper().Equals(albumToUpdate.ToUpper()))
             {
-                if (parameterToUpdate.ToUpper().Equals("ALBUM")) { entityToUpdate.Album = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("ARTIST")) { entityToUpdate.Artist = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("NUMOFTRACKS")) { entityToUpdate.NumberOfTracks = Convert.ToInt32(newValue); }
-                if (parameterToUpdate.ToUpper().Equals("TRACK1")) { entityToUpdate.Track_01_Title = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("TRACK2")) { entityToUpdate.Track_02_Title = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("TRACK3")) { entityToUpdate.Track_03_Title = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("TRACK4")) { entityToUpdate.Track_04_Title = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("TRACK5")) { entityToUpdate.Track_05_Title = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("ALBUM")) { TrackEntity updatedAlbum = new TrackEntity { Album = newValue, Artist = entityToUpdate.Artist, NumberOfTracks = entityToUpdate.NumberOfTracks, Track_01_Title = entityToUpdate.Track_01_Title, Track_02_Title = entityToUpdate.Track_02_Title, Track_03_Title = entityToUpdate.Track_03_Title, Track_04_Title = entityToUpdate.Track_04_Title, Track_05_Title = entityToUpdate.Track_05_Title }; this.DeleteTrackFromTrackEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddTrackToTrackEntity(updatedAlbum); this.context.SaveChanges(); }
+                if (parameterToUpdate.ToUpper().Equals("ARTIST")) { TrackEntity updatedAlbum = new TrackEntity { Album = entityToUpdate.Album, Artist = newValue, NumberOfTracks = entityToUpdate.NumberOfTracks, Track_01_Title = entityToUpdate.Track_01_Title, Track_02_Title = entityToUpdate.Track_02_Title, Track_03_Title = entityToUpdate.Track_03_Title, Track_04_Title = entityToUpdate.Track_04_Title, Track_05_Title = entityToUpdate.Track_05_Title }; this.DeleteTrackFromTrackEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddTrackToTrackEntity(updatedAlbum); this.context.SaveChanges(); }
+                if (parameterToUpdate.ToUpper().Equals("NUMOFTRACKS"))  { entityToUpdate.NumberOfTracks = Convert.ToInt32(newValue); }
+                if (parameterToUpdate.ToUpper().Equals("TRACK1"))       { entityToUpdate.Track_01_Title = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("TRACK2"))       { entityToUpdate.Track_02_Title = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("TRACK3"))       { entityToUpdate.Track_03_Title = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("TRACK4"))       { entityToUpdate.Track_04_Title = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("TRACK5"))       { entityToUpdate.Track_05_Title = newValue; }
 
-                this.context.UpdateObject(entityToUpdate);
-                this.context.SaveChanges();
+                if (parameterToUpdate.ToUpper().Equals("NUMOFTRACKS") || parameterToUpdate.ToUpper().Equals("TRACK1") || parameterToUpdate.ToUpper().Equals("TRACK2") || parameterToUpdate.ToUpper().Equals("TRACK3") || parameterToUpdate.ToUpper().Equals("TRACK4") || parameterToUpdate.ToUpper().Equals("TRACK5"))
+                {
+                    this.context.UpdateObject(entityToUpdate);
+                    this.context.SaveChanges();
+                }
             }
         }
         public void AddTrackToTrackEntity(TrackEntity newTrack)

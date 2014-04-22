@@ -109,15 +109,16 @@ namespace DaveClientApp.HttpMethods
             }
         }
 
-        //  PUT Methods
-        public void PutUpdateForParameter(HttpClient client, HttpResponseMessage response, string classType, string albumId, string parameter, string update)
+        //  PUT Methods     -       Http.PutUpdateForParameter(client, response, albumToUpdate, byArtist, parameter, newValue);
+
+        public void PutUpdateForParameter(HttpClient client, HttpResponseMessage response, string albumToUpdate, string byArtist, string parameter, string newValue)
         {
-            //PUT  api/RecordCollection?classType={classType}&albumId={albumId}&parameter={parameter}&update={update}
-            response = client.PutAsJsonAsync("api/RecordCollection?classType=" + classType + "&albumId=" + albumId + "&parameter=" + parameter + "&update=" + update, "").Result;
+            //PUT  api/WebService?albumToUpdate={albumToUpdate}&byArtist={byArtist}&parameterToUpdate={parameterToUpdate}&newValue={newValue}
+            response = client.PutAsJsonAsync("api/WebService?albumToUpdate=" + albumToUpdate + "&byArtist=" + byArtist + "&parameterToUpdate=" + parameter + "&newValue=" + newValue, "").Result;
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("PUT method was SUCCESSFUL: '" + albumId + "' was updated"); //+ response.Headers.Location.AbsoluteUri);
+                Console.WriteLine("PUT method was SUCCESSFUL: '" + albumToUpdate + "' was updated"); //+ response.Headers.Location.AbsoluteUri);
             }
             else
             {
@@ -125,11 +126,11 @@ namespace DaveClientApp.HttpMethods
             }
         }
 
-        //  DELETE Methods
-        public void DeleteAlbumFromCollection(HttpClient client, HttpResponseMessage response, string albumId)
+        //  DELETE Methods  -   DELETE api/WebService?albumToDelete={albumToDelete}&byArtist={byArtist}
+        public void DeleteAlbumFromCollection(HttpClient client, HttpResponseMessage response, string albumId, string artist)
         {
             //  DELETE api/RecordCollection?album={album}  
-            response = client.DeleteAsync("api/RecordCollection?album=" + albumId).Result;
+            response = client.DeleteAsync("api/WebService?albumToDelete=" + albumId + "&byArtist=" + artist).Result;
 
             if (response.IsSuccessStatusCode)                                               // 200 .. 299
             {

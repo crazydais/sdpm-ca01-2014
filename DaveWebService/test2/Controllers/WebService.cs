@@ -20,9 +20,10 @@ namespace DaveWebService.Controllers
             try
             {
                 var recordDataSource = new RecordCollectionDataSource();
-                recordDataSource.DeleteAlbumFromAlbumEntity(albumToDelete, byArtist);
+                
                 recordDataSource.DeleteGenreFromGenreEntity(albumToDelete, byArtist);
                 recordDataSource.DeleteTrackFromTrackEntity(albumToDelete, byArtist);
+                recordDataSource.DeleteAlbumFromAlbumEntity(albumToDelete, byArtist);
                 result = "Album Deleted successfuly";
             }
             catch (Exception)
