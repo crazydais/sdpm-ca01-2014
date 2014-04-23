@@ -111,10 +111,10 @@ namespace DaveClientApp.HttpMethods
 
         //  PUT Methods     -       Http.PutUpdateForParameter(client, response, albumToUpdate, byArtist, parameter, newValue);
 
-        public void PutUpdateForParameter(HttpClient client, HttpResponseMessage response, string albumToUpdate, string byArtist, string parameter, string newValue)
+        public void PutUpdateForParameter(HttpClient client, HttpResponseMessage response, string entityType, string albumToUpdate, string byArtist, string parameter, string newValue)
         {
             //PUT  api/WebService?albumToUpdate={albumToUpdate}&byArtist={byArtist}&parameterToUpdate={parameterToUpdate}&newValue={newValue}
-            response = client.PutAsJsonAsync("api/WebService?albumToUpdate=" + albumToUpdate + "&byArtist=" + byArtist + "&parameterToUpdate=" + parameter + "&newValue=" + newValue, "").Result;
+            response = client.PutAsJsonAsync("api/WebService?entityType=" + entityType + "&albumToUpdate=" + albumToUpdate + "&byArtist=" + byArtist + "&parameterToUpdate=" + parameter + "&newValue=" + newValue, "").Result;
 
             if (response.IsSuccessStatusCode)
             {

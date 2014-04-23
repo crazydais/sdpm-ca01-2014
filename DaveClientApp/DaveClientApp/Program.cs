@@ -57,9 +57,9 @@ namespace DaveClientApp
 
                         Console.WriteLine("\n~~~~  ~~~~\n");
 
-                //  PUT api/WebService?albumToUpdate={albumToUpdate}&byArtist={byArtist}&parameterToUpdate={parameterToUpdate}&newValue={newValue}
-                string albumToUpdate = "Davey's Hits", byArtist = "Dave Nolan", parameter = "ALBUM", newValue = "Electro Classics";          //  This is to update
-                //Http.PutUpdateForParameter(client, response, albumToUpdate, byArtist, parameter, newValue);
+                //  PUT 
+                        string entityType = "ALBUMENTITY", albumToUpdate = "Davey's Hits", byArtist = "Dave Nolan", parameter = "ALBUM", newValue = "Drum Machine";          //  This is to update
+                        Http.PutUpdateForParameter(client, response, entityType, albumToUpdate, byArtist, parameter, newValue);
 
                         Console.WriteLine("\n~~~~  ~~~~\n");
 
@@ -69,7 +69,7 @@ namespace DaveClientApp
      
                 //  DELETE Album with title
                 string albumId = "Electro Classics", artist = "Dave Nolan";
-                Http.DeleteAlbumFromCollection(client, response, albumId, artist);
+                //Http.DeleteAlbumFromCollection(client, response, albumId, artist);
 
 
                         Console.WriteLine("\n~~~~  ~~~~\n");

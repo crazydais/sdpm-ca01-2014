@@ -109,10 +109,9 @@ namespace DaveClientApp.HttpMethods
         }
 
         //  PUT Methods
-        public void PutUpdateForParameter(HttpClient client, HttpResponseMessage response, string classType, string albumId, string parameter, string update)
+        void PutUpdateForParameter(HttpClient client, HttpResponseMessage response, string entityType, string classType, string albumId, string parameter, string update)
         {
-            //PUT  api/RecordCollection?classType={classType}&albumId={albumId}&parameter={parameter}&update={update}
-            response = client.PutAsJsonAsync("api/RecordCollection?classType=" + classType + "&albumId=" + albumId + "&parameter=" + parameter + "&update=" + update, "").Result;
+            response = client.PutAsJsonAsync("api/RecordCollection?=" + entityType + "classType=" + classType + "&albumId=" + albumId + "&parameter=" + parameter + "&update=" + update, "").Result;
 
             if (response.IsSuccessStatusCode)
             {

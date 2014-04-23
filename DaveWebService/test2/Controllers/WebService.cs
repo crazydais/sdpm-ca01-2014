@@ -35,21 +35,66 @@ namespace DaveWebService.Controllers
         }
 
      //  PUT Methods - Update an entity
-        public string PutUpdateForAlbum(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
+        public string PutUpdateForAlbum(string entityType, string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
         {
             string result = "";
             var recordDataSource = new RecordCollectionDataSource();
-            try
-            {
-                recordDataSource.PutUpdateForAlbum(albumToUpdate, byArtist, parameterToUpdate, newValue);
-                recordDataSource.PutUpdateForGenre(albumToUpdate, byArtist, parameterToUpdate, newValue);
-                recordDataSource.PutUpdateForTrack(albumToUpdate, byArtist, parameterToUpdate, newValue);
 
-                result = "Update was successful";
-            }
-            catch(Exception)
+            //  If the parameter being updated is 'album' or 'artist', then all three entities will need to be updated.
+            if (parameterToUpdate.ToUpper().Equals("ALBUM") || parameterToUpdate.ToUpper().Equals("ARTIST"))
             {
-                result = "Updating album was unsuccessful. An exception was thrown";
+                try
+                {
+                    recordDataSource.PutUpdateForAlbum(albumToUpdate, byArtist, parameterToUpdate, newValue);
+                    recordDataSource.PutUpdateForGenre(albumToUpdate, byArtist, parameterToUpdate, newValue);
+                    recordDataSource.PutUpdateForTrack(albumToUpdate, byArtist, parameterToUpdate, newValue);
+
+                    result = "Update was successful";
+                }
+                catch (Exception)
+                {
+                    result = "Updating album was unsuccessful. An exception was thrown";
+                }
+            }
+            //  Otherwise, update one of the specific entities.
+            else
+            {
+                if (entityType.ToUpper().Equals("ALBUMENTITY"))
+                {
+                    try
+                    {
+                        recordDataSource.PutUpdateForAlbum(albumToUpdate, byArtist, parameterToUpdate, newValue);
+                        result = "Update was successful";
+                    }
+                    catch (Exception)
+                    {
+                        result = "Updating album was unsuccessful. An exception was thrown";
+                    }
+                }
+                else if (entityType.ToUpper().Equals("GENREENTITY"))
+                {
+                    try
+                    {
+                        recordDataSource.PutUpdateForGenre(albumToUpdate, byArtist, parameterToUpdate, newValue);
+                        result = "Update was successful";
+                    }
+                    catch (Exception)
+                    {
+                        result = "Updating album was unsuccessful. An exception was thrown";
+                    }
+                }
+                else if (entityType.ToUpper().Equals("TRACKENTITY"))
+                {
+                    try
+                    {
+                        recordDataSource.PutUpdateForTrack(albumToUpdate, byArtist, parameterToUpdate, newValue);
+                        result = "Update was successful";
+                    }
+                    catch (Exception)
+                    {
+                        result = "Updating album was unsuccessful. An exception was thrown";
+                    }
+                }
             }
 
             return result;
