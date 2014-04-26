@@ -49,42 +49,74 @@ namespace DaveWebService.Controllers
 
 
     //  Album Entity Queries
-        public void DeleteAlbumFromAlbumEntity(string albumToDelete, string byArtist)
+        public bool DeleteAlbumFromAlbumEntity(string albumToDelete, string byArtist)
         {
-            foreach(AlbumEntity al in from als in this.context.AlbumEntity where als.PartitionKey == byArtist select als )
+            bool result = false;
+
+            if (albumToDelete != null && byArtist != null)
             {
-                if (al.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+                try
                 {
-                    this.context.DeleteObject(al);
-                    this.context.SaveChanges();
+                    foreach (AlbumEntity al in from als in this.context.AlbumEntity where als.PartitionKey == byArtist select als)
+                    {
+                        if (al.Album.ToUpper().Equals(albumToDelete.ToUpper()))
+                        {
+                            this.context.DeleteObject(al);
+                            this.context.SaveChanges();
+                            result = true;
+                        }
+                    }
                 }
+                catch (Exception) { }
             }
+            return result;
         }
-        public void PutUpdateForAlbum(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
+        public bool PutUpdateForAlbum(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
         {
-            var result = from al in this.context.AlbumEntity where al.PartitionKey == byArtist select al;
-            AlbumEntity entityToUpdate = result.FirstOrDefault<AlbumEntity>();
+            bool outcome = false;
 
-            if (entityToUpdate.Album.ToUpper().Equals(albumToUpdate.ToUpper()))
+            if (albumToUpdate != null && byArtist != null && parameterToUpdate != null && newValue != null)
             {
-                if (parameterToUpdate.ToUpper().Equals("ALBUM")) { AlbumEntity updatedAlbum = new AlbumEntity { Album = newValue, Artist = entityToUpdate.Artist, AlbumValue = entityToUpdate.AlbumValue, Label = entityToUpdate.Label, Rating = entityToUpdate.Rating }; this.DeleteAlbumFromAlbumEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddAlbumToAlbumEntity(updatedAlbum); this.context.SaveChanges(); }
-                if (parameterToUpdate.ToUpper().Equals("ARTIST")) { AlbumEntity updatedAlbum = new AlbumEntity { Album = entityToUpdate.Album, Artist = newValue, AlbumValue = entityToUpdate.AlbumValue, Label = entityToUpdate.Label, Rating = entityToUpdate.Rating }; this.DeleteAlbumFromAlbumEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddAlbumToAlbumEntity(updatedAlbum); this.context.SaveChanges(); }
-                if (parameterToUpdate.ToUpper().Equals("LABEL"))  {entityToUpdate.Label = newValue;}
-                if (parameterToUpdate.ToUpper().Equals("VALUE"))  {entityToUpdate.AlbumValue = Convert.ToDouble(newValue);}
-                if (parameterToUpdate.ToUpper().Equals("RATING")) {entityToUpdate.Rating = Convert.ToDouble(newValue);}
-
-                if (parameterToUpdate.ToUpper().Equals("LABEL") || parameterToUpdate.ToUpper().Equals("VALUE") || parameterToUpdate.ToUpper().Equals("RATING"))
+                try
                 {
-                    this.context.UpdateObject(entityToUpdate);
-                    this.context.SaveChanges();
-                }
-            }
+                    var result = from al in this.context.AlbumEntity where al.PartitionKey == byArtist select al;
+                    AlbumEntity entityToUpdate = result.FirstOrDefault<AlbumEntity>();
 
+                    if (entityToUpdate.Album.ToUpper().Equals(albumToUpdate.ToUpper()))
+                    {
+                        if (parameterToUpdate.ToUpper().Equals("ALBUM")) { AlbumEntity updatedAlbum = new AlbumEntity { Album = newValue, Artist = entityToUpdate.Artist, AlbumValue = entityToUpdate.AlbumValue, Label = entityToUpdate.Label, Rating = entityToUpdate.Rating }; this.DeleteAlbumFromAlbumEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddAlbumToAlbumEntity(updatedAlbum); this.context.SaveChanges(); }
+                        if (parameterToUpdate.ToUpper().Equals("ARTIST")) { AlbumEntity updatedAlbum = new AlbumEntity { Album = entityToUpdate.Album, Artist = newValue, AlbumValue = entityToUpdate.AlbumValue, Label = entityToUpdate.Label, Rating = entityToUpdate.Rating }; this.DeleteAlbumFromAlbumEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddAlbumToAlbumEntity(updatedAlbum); this.context.SaveChanges(); }
+                        if (parameterToUpdate.ToUpper().Equals("LABEL")) { entityToUpdate.Label = newValue; }
+                        if (parameterToUpdate.ToUpper().Equals("VALUE")) { entityToUpdate.AlbumValue = Convert.ToDouble(newValue); }
+                        if (parameterToUpdate.ToUpper().Equals("RATING")) { entityToUpdate.Rating = Convert.ToDouble(newValue); }
+
+                        if (parameterToUpdate.ToUpper().Equals("LABEL") || parameterToUpdate.ToUpper().Equals("VALUE") || parameterToUpdate.ToUpper().Equals("RATING"))
+                        {
+                            this.context.UpdateObject(entityToUpdate);
+                            this.context.SaveChanges();
+                            outcome = true;
+                        }
+                    }
+                }
+                catch (Exception) { }
+            }
+            return outcome;
         }
-        public void AddAlbumToAlbumEntity(AlbumEntity newAlbum)
+        public bool AddAlbumToAlbumEntity(AlbumEntity newAlbum)
         {
-            this.context.AddObject("AlbumEntity", newAlbum);
-            this.context.SaveChanges();
+            bool result = false;
+
+            if (newAlbum.Album != null)
+            {
+                try
+                {
+                    this.context.AddObject("AlbumEntity", newAlbum);
+                    this.context.SaveChanges();
+                    result = true;
+                }
+                catch(Exception) { }
+            }
+            return result;
         }
         public IEnumerable<AlbumEntity> GetAlbumFromAlbumEntity(bool showAllAlbums)
         {
@@ -212,10 +244,22 @@ namespace DaveWebService.Controllers
                 }
             }
         }
-        public void AddGenreToGenreEntity(GenreEntity newGenre)
+        public bool AddGenreToGenreEntity(GenreEntity newGenre)
         {
-            this.context.AddObject("GenreEntity", newGenre);
-            this.context.SaveChanges();
+            bool result = false;
+
+            if(newGenre.Album != null)
+            {
+                try
+                {
+                    this.context.AddObject("GenreEntity", newGenre);
+                    this.context.SaveChanges();
+                    result = true;
+                }
+                catch(Exception) { }
+            }
+
+            return result;
         }
         public IEnumerable<GenreEntity> GetGenreFromGenreEntity(bool showAllGenres)
         {
@@ -340,10 +384,20 @@ namespace DaveWebService.Controllers
                 }
             }
         }
-        public void AddTrackToTrackEntity(TrackEntity newTrack)
+        public bool AddTrackToTrackEntity(TrackEntity newTrack)
         {
-            this.context.AddObject("TrackEntity", newTrack);
-            this.context.SaveChanges();
+            bool result = false;
+            if(newTrack.Album != null)
+            {
+                try
+                {
+                    this.context.AddObject("TrackEntity", newTrack);
+                    this.context.SaveChanges();
+                    result = true;
+                }
+                catch (Exception) { }
+            }
+            return result;
         }
         public IEnumerable<TrackEntity> GetTrackFromTrackEntity(bool showAllTracks)
         {
