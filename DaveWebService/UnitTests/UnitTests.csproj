@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="Conflicts.cs" />
     <Compile Include="Tests\EntityTests.cs" />
-    <Compile Include="Tests\UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
