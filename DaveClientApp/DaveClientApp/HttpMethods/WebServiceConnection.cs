@@ -60,11 +60,6 @@ namespace DaveClientApp.HttpMethods
                 var artist = response.Content.ReadAsAsync<String>().Result;
                 Console.WriteLine(artist);
             }
-            else
-            {
-                var artist = response.Content.ReadAsAsync<String>().Result;
-                Console.WriteLine(artist);
-            }
         }
         public void GetAlbumsFromArtist(HttpClient client, HttpResponseMessage response, string artistName)
         {
@@ -77,28 +72,12 @@ namespace DaveClientApp.HttpMethods
                     Console.WriteLine(s);
                 }  
             }
-            else
-            {
-                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                foreach (string s in albums)
-                {
-                    Console.WriteLine(s);
-                }  
-            }
         }
 
         public void GetTrackListFromAlbum(HttpClient client, HttpResponseMessage response, string albumName)
         {
             response = client.GetAsync("api/Webservice?getTracksFromAlbumName=" + albumName).Result;
             if (response.IsSuccessStatusCode)
-            {
-                var tracks = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                foreach (string s in tracks)
-                {
-                    Console.WriteLine(s);
-                } 
-            }
-            else
             {
                 var tracks = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
                 foreach (string s in tracks)
@@ -119,14 +98,6 @@ namespace DaveClientApp.HttpMethods
                     Console.WriteLine(s);
                 } 
             }
-            else
-            {
-                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                foreach (string s in albums)
-                {
-                    Console.WriteLine(s);
-                } 
-            }
         }
 
         public void GetAlbumsInOrderOfValue(HttpClient client, HttpResponseMessage response)
@@ -134,18 +105,10 @@ namespace DaveClientApp.HttpMethods
             response = client.GetAsync("api/WebService?showHighestValueAlbumsFirst=true").Result;
             if (response.IsSuccessStatusCode)
             {
-                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                foreach (string s in albums)
+                var albums = response.Content.ReadAsAsync<IEnumerable<AlbumEntity>>().Result;
+                foreach (AlbumEntity a in albums)
                 {
-                    Console.WriteLine(s);
-                }
-            }
-            else
-            {
-                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                foreach (string s in albums)
-                {
-                    Console.WriteLine(s);
+                    Console.WriteLine(a.ToString());
                 }
             }
         }
@@ -155,18 +118,10 @@ namespace DaveClientApp.HttpMethods
             response = client.GetAsync("api/WebService?showTopRatedAlbums=true").Result;
             if (response.IsSuccessStatusCode)
             {
-                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                foreach (string s in albums)
+                var albums = response.Content.ReadAsAsync<IEnumerable<AlbumEntity>>().Result;
+                foreach (AlbumEntity a in albums)
                 {
-                    Console.WriteLine(s);
-                }
-            }
-            else
-            {
-                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                foreach (string s in albums)
-                {
-                    Console.WriteLine(s);
+                    Console.WriteLine(a.ToString());
                 }
             }
         }

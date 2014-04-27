@@ -33,7 +33,7 @@ namespace DaveClientApp.Main
 
         public bool Exit()
         {
-            Console.WriteLine("\n\nEXIT  - Thanks, and goodbye!!!\n\n");
+            Console.WriteLine("\n\nThanks, and goodbye!!!\n\n");
             return false;
         }
 

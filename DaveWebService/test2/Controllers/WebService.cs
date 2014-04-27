@@ -234,17 +234,20 @@ namespace DaveWebService.Controllers
             //  Number of Albums...
             var albums = this.GetAllAlbums(true);
             int numOfAlbums = albums.Count<AlbumEntity>();
-            Report.Add(String.Format("Total number of albums:\t {0}\n", numOfAlbums));
+            Report.Add(String.Format("Total number of albums:\t {0} ", numOfAlbums));
+            Report.Add(String.Format("\n"));
 
             //  Highest Valued Album...
             var highestValue = rds.GetAlbumsInOrderOfExpense(true);
             var value = highestValue.First<AlbumEntity>();
-            Report.Add(String.Format("The most expensive album is:\t {0}\n", value.ToString()));
+            Report.Add(String.Format("The most expensive album is:\t {0} ", value.ToString()));
+            Report.Add(String.Format("\n"));
 
             //  Highest Rated Album...
             var highestRating = rds.GetTopRatedAlbums(true);
             var rating = highestRating.First<AlbumEntity>();
-            Report.Add(String.Format("The highest rated album is:\t {0\n}",rating.ToString()));
+            Report.Add(String.Format("The highest rated album is:\t {0} ",rating.ToString()));
+            Report.Add(String.Format("\n"));
 
             return Report;
         }

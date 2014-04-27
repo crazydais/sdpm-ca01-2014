@@ -36,7 +36,7 @@ namespace DaveWebService.Entity
         //  Overriding a method of the GUID class
         public override string ToString()
         {
-            return Album + " - " + Artist + "\n\t\t\t\tLabel: " + Label + "Value: EUR: " + AlbumValue + ". Rating: " + Rating;          
+            return Album + " - " + Artist + "\n\t\t\t\t Label: " + Label + "Value: EUR: " + AlbumValue + ". Rating: " + Rating;          
         }
     }
     

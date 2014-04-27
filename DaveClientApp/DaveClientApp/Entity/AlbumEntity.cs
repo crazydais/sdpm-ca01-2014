@@ -36,7 +36,7 @@ namespace DaveClientApp.Entity
         //  Overriding a method of the GUID class
         public override string ToString()
         {
-            return Album + " ~by~ " + Artist + ". Label: " + Label + ". Value: " + AlbumValue;          
+            return Album + " - " + Artist + ". Label: " + Label + ". Value: EUR " + AlbumValue + ". Rating: " + Rating;          
         }
     }
     
