@@ -13,7 +13,7 @@ namespace DaveClientApp.HttpMethods
     public class WebServiceConnection
     {
         //  POST Methods
-        public void PostNewAlbumToCollection(HttpClient client, AlbumEntity album, GenreEntity genre, TrackEntity track)
+        public void PostNewAlbumToCollection(HttpClient client, HttpResponseMessage response, AlbumEntity album, GenreEntity genre, TrackEntity track)
         {
             HttpResponseMessage response1 = client.PostAsJsonAsync("api/WebService?album=true", album).Result;
             HttpResponseMessage response2 = client.PostAsJsonAsync("api/WebService?genre=true", genre).Result;
@@ -22,10 +22,12 @@ namespace DaveClientApp.HttpMethods
             {
                 //  This line is not working for some reason... //Uri newMasterUri = response.Headers.Location.AbsoluteUri;          //response.Headers.Location;
                 Console.WriteLine("POST method was SUCCESSFUL: '" + album.Album + "' was added"); //+ response.Headers.Location.AbsoluteUri);
+                response = response1;
             }
             else
             {
                 Console.WriteLine("POST method was NOT successful, " + response1.StatusCode + " " + response1.ReasonPhrase);
+                response = response1;
             }
         }
 

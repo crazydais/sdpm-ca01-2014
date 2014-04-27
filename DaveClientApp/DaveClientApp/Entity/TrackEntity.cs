@@ -23,12 +23,15 @@ namespace DaveClientApp.Entity
         public string Track_04_Title { get; set; }
         public string Track_05_Title { get; set; }
 
+        bool wasTracksInit = false;
+
 
         //  Overriding a method of the GUID class
         public override string ToString()
         {
             return "";          
         }
+
     }
     
 }

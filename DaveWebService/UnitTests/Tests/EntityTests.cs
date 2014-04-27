@@ -30,6 +30,97 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void Test_GetArtistFromAlbum_Success()
+        {
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            string result = rds.GetArtistFromAlbum("Trouser Jazz");
+            Assert.AreEqual(result.ToUpper(), "MR. SCRUFF");
+        }
+
+        [TestMethod]
+        public void Test_GetArtistFromAlbum_Fail()
+        {
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            string result = rds.GetArtistFromAlbum("abcde");
+            Assert.AreEqual(result, "Artist Not Found");
+        }
+
+        [TestMethod]
+        public void Test_GetAlbumsFromArtist_Success()
+        {
+            AlbumEntity newAlbum1 = new AlbumEntity() { Artist = "Test Artist", Album = "Album1", Label = "Unsigned", AlbumValue = 1.0, Rating = 2.0 };
+            AlbumEntity newAlbum2 = new AlbumEntity() { Artist = "Test Artist", Album = "Album2", Label = "Unsigned", AlbumValue = 3.0, Rating = 4.0 };
+            
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            rds.AddAlbumToAlbumEntity(newAlbum1);
+            rds.AddAlbumToAlbumEntity(newAlbum2);
+
+            IEnumerable<String> results = rds.GetAlbumsFromArtist("Test Artist");
+            int i = 1;
+            foreach(String al in results)
+            {
+                if (i == 1) { Assert.AreEqual(al, "Album1"); }
+                if (i == 2) { Assert.AreEqual(al, "Album2"); }
+                ++i; 
+            }
+
+            rds.DeleteAlbumFromAlbumEntity("Album1", "Test Artist");
+            rds.DeleteAlbumFromAlbumEntity("Album2", "Test Artist");
+        }
+
+        [TestMethod]
+        public void Test_GetAlbumsFromArtist_Fail()
+        {
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            IEnumerable<String> results = rds.GetAlbumsFromArtist("Test Artist");
+            string al = results.First();
+            Assert.AreEqual(al, "No Artist Found, with name: Test Artist");
+        }
+
+        [TestMethod]
+        public void Test_GetAlbumsInOrderOfExpense_Success()
+        {
+            AlbumEntity test1 = new AlbumEntity(){Artist = "TestArtist1", Album = "TestAlbum1", AlbumValue = 7.50, Label = "TestLabel", Rating = 1.2};
+            AlbumEntity test2 = new AlbumEntity(){Artist = "TestArtist2", Album = "TestAlbum2", AlbumValue = 8.60, Label = "TestLabel", Rating = 2.3};
+            AlbumEntity test3 = new AlbumEntity(){Artist = "TestArtist3", Album = "TestAlbum3", AlbumValue = 9.70, Label = "TestLabel", Rating = 3.4};
+
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            rds.AddAlbumToAlbumEntity(test1);
+            rds.AddAlbumToAlbumEntity(test2);
+            rds.AddAlbumToAlbumEntity(test3);
+
+            IEnumerable<AlbumEntity> result = rds.GetAlbumsInOrderOfExpense(true);
+            AlbumEntity temp1 = result.ElementAt(0), temp2 = result.ElementAt(1), temp3 = result.ElementAt(2);
+            Assert.IsTrue(temp1.AlbumValue > temp2.AlbumValue && temp2.AlbumValue > temp3.AlbumValue);
+
+            rds.DeleteAlbumFromAlbumEntity("TestAlbum1", "TestArtist1");
+            rds.DeleteAlbumFromAlbumEntity("TestAlbum2", "TestArtist2");
+            rds.DeleteAlbumFromAlbumEntity("TestAlbum3", "TestArtist3");
+        }
+
+        [TestMethod]
+        public void Test_GetTopRatedAlbums_Success()
+        {
+            AlbumEntity test1 = new AlbumEntity(){Artist = "TestArtist1", Album = "TestAlbum1", AlbumValue = 7.50, Label = "TestLabel", Rating = 1.2};
+            AlbumEntity test2 = new AlbumEntity(){Artist = "TestArtist2", Album = "TestAlbum2", AlbumValue = 8.60, Label = "TestLabel", Rating = 2.3};
+            AlbumEntity test3 = new AlbumEntity(){Artist = "TestArtist3", Album = "TestAlbum3", AlbumValue = 9.70, Label = "TestLabel", Rating = 3.4};
+
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            rds.AddAlbumToAlbumEntity(test1);
+            rds.AddAlbumToAlbumEntity(test2);
+            rds.AddAlbumToAlbumEntity(test3);
+
+            IEnumerable<AlbumEntity> result = rds.GetTopRatedAlbums(true);
+            AlbumEntity temp1 = result.ElementAt(0), temp2 = result.ElementAt(1), temp3 = result.ElementAt(2);
+            Assert.IsTrue(temp1.Rating > temp2.Rating && temp2.AlbumValue > temp3.Rating);
+
+            rds.DeleteAlbumFromAlbumEntity("TestAlbum1", "TestArtist1");
+            rds.DeleteAlbumFromAlbumEntity("TestAlbum2", "TestArtist2");
+            rds.DeleteAlbumFromAlbumEntity("TestAlbum3", "TestArtist3");
+        }
+            
+
+        [TestMethod]
         public void Test_PostAddAlbumAndDeleteAlbum_Success()
         {
             AlbumEntity newAlbum = new AlbumEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", Label = "Unsigned", AlbumValue = 12.50, Rating = 4.1 };
