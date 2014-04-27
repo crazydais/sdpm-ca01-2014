@@ -14,6 +14,12 @@ namespace DaveWebService.Controllers
     {
         
      //  DELETE Methods - Remove Album, Genre, and Track entities from respective tables
+        /// <summary>
+        /// DeleteAlbum: Deletes an Album entity from the Album Table.
+        /// </summary>
+        /// <param name="albumToDelete">String: Identifies the Album to delete.</param>
+        /// <param name="byArtist">String: Indentifies the Artist of the album</param>
+        /// <returns>String: Returns a string used for testing.</returns>
         public string DeleteAlbum(string albumToDelete, string byArtist)
         {
             string result = "";
@@ -35,6 +41,15 @@ namespace DaveWebService.Controllers
         }
 
      //  PUT Methods - Update an entity
+        /// <summary>
+        /// PutUpdateForAlbum: Updates a member variable of an entity in one of the Azure tables.
+        /// </summary>
+        /// <param name="entityType">String: Identifies which table to update (ie, Album, Genre, or Track).</param>
+        /// <param name="albumToUpdate">String: Identifies the album to update.</param>
+        /// <param name="byArtist">String: Identifies the artist of the album.</param>
+        /// <param name="parameterToUpdate">Identifies the member varible to update (ie, Album, Artist, Label, Value, Rating).</param>
+        /// <param name="newValue"></param>
+        /// <returns>String: Returns a string used for testing.</returns>
         public string PutUpdateForAlbum(string entityType, string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
         {
             string result = "";
@@ -101,6 +116,12 @@ namespace DaveWebService.Controllers
         }
                 
      // POST Methods - Create/Add Data
+        /// <summary>
+        /// PostAddAlbum: Adds an Album entity to the Album table.
+        /// </summary>
+        /// <param name="addAlbum">AlbumEntity: An instance of an albumEntity</param>
+        /// <param name="album">Bool: Confirms the adding of the new album entity</param>
+        /// <returns>String: Returns a string used for testing.</returns>
         public string PostAddAlbum(AlbumEntity addAlbum, bool album)
         {
             string result = "";
@@ -110,6 +131,13 @@ namespace DaveWebService.Controllers
 
             return result;
         }
+        
+        /// <summary>
+        /// PostAddGenre: Adds a Genre entity to the Genre table.
+        /// </summary>
+        /// <param name="addGenre">GenreEntity: An instance of a genreEntity</param>
+        /// <param name="genre">Bool: Confirms the adding of the new genre entity.</param>
+        /// <returns>String: Returns a string used for testing.</returns>
         public string PostAddGenre(GenreEntity addGenre, bool genre)
         {
             string result = "";
@@ -139,6 +167,13 @@ namespace DaveWebService.Controllers
             return result;
 
         }
+        
+        /// <summary>
+        /// PostAddTrack: Adds a Track entity to the Track table.
+        /// </summary>
+        /// <param name="addTrack">TrackEntity: An instance of a trackEntity.</param>
+        /// <param name="track">Bool: Confirms the adding of the new track entity.</param>
+        /// <returns>String: Returns a string used for testing.</returns>
         public string PostAddTrack(TrackEntity addTrack, bool track)
         {
             string result = "";
@@ -171,9 +206,9 @@ namespace DaveWebService.Controllers
      // GET Methods - Read Data
         
         /// <summary>
-        /// Show all the albums that are currently stored in the Albums table.
+        /// GetAllAlbums: Show all the albums that are currently stored in the Albums table.
         /// </summary>
-        /// <param name="showCollection">Boolean Type: true, false</param>
+        /// <param name="showCollection">Bool: true, false</param>
         /// <returns>Returns an IEnumerable'AlbumEntity' - of all the albums in the Album Table</returns>
         public IEnumerable<AlbumEntity> GetAllAlbums(bool showCollection)
         {
@@ -182,9 +217,9 @@ namespace DaveWebService.Controllers
         }
         
         /// <summary>
-        /// Show the artist's name for the album.
+        /// GetArtistFromAlbum: Show the artist's name for the album.
         /// </summary>
-        /// <param name="albumName">String type: Album Title</param>
+        /// <param name="albumName">String: Album Title</param>
         /// <returns>Returns a string - of the artists name</returns>
         public string GetArtistFromAlbum(string getArtistFromAlbumName)
         {
@@ -193,35 +228,67 @@ namespace DaveWebService.Controllers
         }
         
         /// <summary>
-        /// Show all the albums by a certain artist.
+        /// GetAlbumsFromArtist: Show all the albums by a certain artist.
         /// </summary>
-        /// <param name="artistName">String Type: Artist's Name or Band/Group Title</param>
+        /// <param name="artistName">String: Artist's Name or Band/Group Title</param>
         /// <returns>Returns an IEnumerable'String' - of all the albums written by that artist</returns>
         public IEnumerable<String> GetAlbumsFromArtist(string getAlbumsFromArtistName)
         {
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetAlbumsFromArtist(getAlbumsFromArtistName);
         }
+        
+        /// <summary>
+        /// GetTrackNamesFromAlbum: Gets a list of all the tracks for a given album title.
+        /// </summary>
+        /// <param name="getTracksFromAlbumName">String: The title of the album.</param>
+        /// <returns>IEnumerable(String): List of all tracks in the queried album.</returns>
         public IEnumerable<String> GetTrackNamesFromAlbum(string getTracksFromAlbumName)
         {
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetTracksFromAlbum(getTracksFromAlbumName);
         }
+        
+        /// <summary>
+        /// GetAlbumsFromGenre: Gets all the albums which are associated with the given genre's.
+        /// </summary>
+        /// <param name="forGenre01">String: Genre to query</param>
+        /// <param name="forGenre02">String: Genre to query</param>
+        /// <param name="forGenre03">String: Genre to query</param>
+        /// <returns>IEnumerable(String): List of all the albums that match the query.</returns>
         public IEnumerable<String> GetAlbumsFromGenre(string forGenre01, string forGenre02, string forGenre03)
         {
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetAlbumsFromGenres(forGenre01, forGenre02, forGenre03);
         }
+        
+        /// <summary>
+        /// GetAlbumsInOrderOfExpense: Gets a list of all the albums in order of their value, from high to low.
+        /// </summary>
+        /// <param name="showHighestValueAlbumsFirst">Bool: Confirm query</param>
+        /// <returns>IEnumberable(String): A list of all the albums in order of their value, from high to low.</returns>
         public IEnumerable<AlbumEntity> GetAlbumsInOrderOfExpense(bool showHighestValueAlbumsFirst)
         {
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetAlbumsInOrderOfExpense(showHighestValueAlbumsFirst);
         }
+        
+        /// <summary>
+        /// GetTopRatedAlbums: Gets a list of all the albums in order of their rating, from high to low.
+        /// </summary>
+        /// <param name="showTopRatedAlbums">Bool: Confirms the query.</param>
+        /// <returns>IEnumberable(String): A list of all the albums in order of their rating, from high to low.</returns>
         public IEnumerable<AlbumEntity> GetTopRatedAlbums(bool showTopRatedAlbums)
         {
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetTopRatedAlbums(showTopRatedAlbums);
         }
+        
+        /// <summary>
+        /// GetCollectionReport: Retruns a report of about the users record collection.
+        /// </summary>
+        /// <param name="showRecordCollectionStatistics">Bool: Confirms the query</param>
+        /// <returns>IEnumberable(String): A report summary of the record collection.</returns>
         public IEnumerable<String> GetCollectionReport(bool showRecordCollectionStatistics)
         {
             var rds = new RecordCollectionDataSource();

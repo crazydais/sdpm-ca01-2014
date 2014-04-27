@@ -118,7 +118,15 @@ namespace UnitTests
             rds.DeleteAlbumFromAlbumEntity("TestAlbum2", "TestArtist2");
             rds.DeleteAlbumFromAlbumEntity("TestAlbum3", "TestArtist3");
         }
-            
+        
+        [TestMethod]
+        public void Test_GetReport_Success()
+        {
+            WebServiceController ws = new WebServiceController();
+
+            IEnumerable<String> result = ws.GetCollectionReport(true);
+            Assert.IsTrue(result.First<String>().Equals("\tRecord Collection Report"));
+        }
 
         [TestMethod]
         public void Test_PostAddAlbumAndDeleteAlbum_Success()
@@ -188,6 +196,48 @@ namespace UnitTests
             Assert.IsFalse(genreResult);
         }
 
+        [TestMethod]
+        public void Test_DeleteGenre_Success()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_DeleteGenre_Fail()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_PutGenre_Success()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_PutGenre_Fail()
+        {
+
+        }
+        
+        [TestMethod]
+        public void Test_GetGenre_Success()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_GetGenre_Fail()
+        {
+
+        }
+        
+        [TestMethod]
+        public void Test_GetAlbumsFromGenres_Success()
+        {
+
+        }
+
 //  TRACK ENTITY TESTS
 
         [TestMethod]
@@ -210,5 +260,57 @@ namespace UnitTests
             bool trackResult = rds.AddTrackToTrackEntity(newTrack);
             Assert.IsFalse(trackResult);
         }
+    
+        [TestMethod]
+        public void Test_DeleteTrack_Success()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_DeleteTrack_Fail()
+        {
+
+        }
+        
+        [TestMethod]
+        public void Test_PutTrack_Success()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_PutTrack_Fail()
+        {
+
+        }
+        
+        [TestMethod]
+        public void Test_GetAllTrack_Success()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_GetAllTrack_Fail()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_GetTrackFromAlbum_Success()
+        {
+
+        }
+
+        [TestMethod]
+        public void Test_GetTrackFromAlbum_Fail()
+        {
+
+        }
+        
+   
+    
+    
     }
 }

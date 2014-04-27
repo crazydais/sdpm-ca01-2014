@@ -398,12 +398,6 @@ namespace DaveWebService.Controllers
             var results = from tr in this.context.TrackEntity select tr;
             return results;
         }
-        public IEnumerable<TrackEntity> GetTrackFromTrackEntity()
-        {
-            var results = from tr in this.context.TrackEntity
-                          select tr;
-            return results;
-        }
         public IEnumerable<string> GetTracksFromAlbum(string album)
         {
             bool foundMatch = false;
