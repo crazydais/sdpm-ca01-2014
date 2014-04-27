@@ -72,12 +72,18 @@ namespace DaveClientApp.HttpMethods
             if (response.IsSuccessStatusCode)
             {
                 var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                Console.WriteLine(albums);
+                foreach(string s in albums)
+                { 
+                    Console.WriteLine(s);
+                }  
             }
             else
             {
-                var artist = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                Console.WriteLine(artist);
+                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in albums)
+                {
+                    Console.WriteLine(s);
+                }  
             }
         }
 
@@ -86,30 +92,107 @@ namespace DaveClientApp.HttpMethods
             response = client.GetAsync("api/Webservice?getTracksFromAlbumName=" + albumName).Result;
             if (response.IsSuccessStatusCode)
             {
-                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                Console.WriteLine(albums);
+                var tracks = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in tracks)
+                {
+                    Console.WriteLine(s);
+                } 
             }
             else
             {
-                var artist = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                Console.WriteLine(artist);
+                var tracks = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in tracks)
+                {
+                    Console.WriteLine(s);
+                } 
             }
         }
-        //  GET api/RecordCollection?genre01={genre01}&genre02={genre02}&genre03={genre03}
-        public void GetAlbumsWithGenres(HttpClient client, HttpResponseMessage response, string genre1, string genre2 = "", string genre3 = "")
+
+        public void GetAlbumsWithGenres(HttpClient client, HttpResponseMessage response, string genre1, string genre2, string genre3)
         {
-            response = client.GetAsync("api/recordcollection?genre01=" + genre1 + "&genre02=" + genre2 + "&genre03=" + genre3).Result;
+            response = client.GetAsync("api/WebService?forGenre01=" + genre1 + "&forGenre02=" + genre2 + "&forGenre03=" + genre3).Result;
             if (response.IsSuccessStatusCode)
             {
                 var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                Console.WriteLine(albums);
+                foreach (string s in albums)
+                {
+                    Console.WriteLine(s);
+                } 
             }
             else
             {
-                var artist = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
-                Console.WriteLine(artist);
+                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in albums)
+                {
+                    Console.WriteLine(s);
+                } 
             }
         }
+
+        public void GetAlbumsInOrderOfValue(HttpClient client, HttpResponseMessage response)
+        {
+            response = client.GetAsync("api/WebService?showHighestValueAlbumsFirst=true").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in albums)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+            else
+            {
+                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in albums)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+        }
+
+        public void GetAlbumsInOrderOfRating(HttpClient client, HttpResponseMessage response)
+        {
+            response = client.GetAsync("api/WebService?showTopRatedAlbums=true").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in albums)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+            else
+            {
+                var albums = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in albums)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+        }
+
+        //GetCollectionReport(bool showRecordCollectionStatistics
+        public void GetRecordCollectionReport(HttpClient client, HttpResponseMessage response)
+        {
+            response = client.GetAsync("api/WebService?showRecordCollectionStatistics=true").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var report = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in report)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+            else
+            {
+                var report = response.Content.ReadAsAsync<IEnumerable<string>>().Result;
+                foreach (string s in report)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+        }
+
 
         //  PUT Methods     -       Http.PutUpdateForParameter(client, response, albumToUpdate, byArtist, parameter, newValue);
 
@@ -129,6 +212,7 @@ namespace DaveClientApp.HttpMethods
         }
 
         //  DELETE Methods  -   DELETE api/WebService?albumToDelete={albumToDelete}&byArtist={byArtist}
+       
         public void DeleteAlbumFromCollection(HttpClient client, HttpResponseMessage response, string albumId, string artist)
         {
             //  DELETE api/RecordCollection?album={album}  

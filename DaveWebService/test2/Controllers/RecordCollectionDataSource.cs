@@ -266,12 +266,6 @@ namespace DaveWebService.Controllers
             var results = from ge in this.context.GenreEntity select ge;
             return results;
         }
-        public IEnumerable<GenreEntity> GetGenreFromGenreEntity()
-        {
-            var results = from ge in this.context.GenreEntity
-                          select ge;
-            return results;
-        }
         public IEnumerable<string> GetAlbumsFromGenres(string genre01, string genre02, string genre03)
         {
             bool foundMatch = false;

@@ -207,7 +207,7 @@ namespace DaveWebService.Controllers
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetTracksFromAlbum(getTracksFromAlbumName);
         }
-        public IEnumerable<String> GetAlbumsFromGenre(string forGenre01, string forGenre02 = "", string forGenre03 = "")
+        public IEnumerable<String> GetAlbumsFromGenre(string forGenre01, string forGenre02, string forGenre03)
         {
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetAlbumsFromGenres(forGenre01, forGenre02, forGenre03);
@@ -221,6 +221,32 @@ namespace DaveWebService.Controllers
         {
             var recordDataSource = new RecordCollectionDataSource();
             return recordDataSource.GetTopRatedAlbums(showTopRatedAlbums);
+        }
+        public IEnumerable<String> GetCollectionReport(bool showRecordCollectionStatistics)
+        {
+            var rds = new RecordCollectionDataSource();
+            List<String> Report = new List<String>();
+
+            //  Title...
+            Report.Add(String.Format("\tRecord Collection Report"));
+            Report.Add(String.Format("- - - - - - - - - - - - - - - - - - - - - - - - - - - - \n"));
+            
+            //  Number of Albums...
+            var albums = this.GetAllAlbums(true);
+            int numOfAlbums = albums.Count<AlbumEntity>();
+            Report.Add(String.Format("Total number of albums:\t {0}\n", numOfAlbums));
+
+            //  Highest Valued Album...
+            var highestValue = rds.GetAlbumsInOrderOfExpense(true);
+            var value = highestValue.First<AlbumEntity>();
+            Report.Add(String.Format("The most expensive album is:\t {0}\n", value.ToString()));
+
+            //  Highest Rated Album...
+            var highestRating = rds.GetTopRatedAlbums(true);
+            var rating = highestRating.First<AlbumEntity>();
+            Report.Add(String.Format("The highest rated album is:\t {0\n}",rating.ToString()));
+
+            return Report;
         }
     }
 }
