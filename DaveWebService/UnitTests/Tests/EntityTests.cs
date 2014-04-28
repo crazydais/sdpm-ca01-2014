@@ -176,7 +176,7 @@ namespace UnitTests
 //  GENRE ENTITY TESTS
 
         [TestMethod]
-        public void Test_PostAddGenre_Success()
+        public void Test_PostAddAndDeleteGenre_Success()
         {
             GenreEntity newGenre = new GenreEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", Genre_01 = "Techno", Genre_02 = "House", Genre_03 = "Electronic" };
 
@@ -196,52 +196,61 @@ namespace UnitTests
             Assert.IsFalse(genreResult);
         }
 
-        [TestMethod]
-        public void Test_DeleteGenre_Success()
-        {
-
-        }
-
-        [TestMethod]
-        public void Test_DeleteGenre_Fail()
-        {
-
-        }
 
         [TestMethod]
         public void Test_PutGenre_Success()
         {
+            GenreEntity newGenre = new GenreEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", Genre_01 = "Electronic", Genre_02 = "Techno", Genre_03 = "House" };
 
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            bool addResult = rds.AddGenreToGenreEntity(newGenre);
+            Assert.IsTrue(addResult);
+            bool putResult = rds.PutUpdateForGenre("Daveys Hits", "Dave Nolan", "genre1", "Pop");
+            Assert.IsTrue(putResult);
+            bool deleteResult = rds.DeleteGenreFromGenreEntity("Daveys Hits", "Dave Nolan");
+            Assert.IsTrue(deleteResult);
         }
 
-        [TestMethod]
-        public void Test_PutGenre_Fail()
-        {
-
-        }
         
         [TestMethod]
         public void Test_GetGenre_Success()
         {
+            GenreEntity newGenre = new GenreEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", Genre_01 = "Electronic", Genre_02 = "Techno", Genre_03 = "House" };
 
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            bool addResult = rds.AddGenreToGenreEntity(newGenre);
+            Assert.IsTrue(addResult);
+
+            IEnumerable<GenreEntity> ge = rds.GetGenreFromGenreEntity(true);
+            GenreEntity g = ge.First<GenreEntity>();
+            Assert.IsNotNull(g.Album);
+
+            bool deleteResult = rds.DeleteGenreFromGenreEntity("Daveys Hits", "Dave Nolan");
+            Assert.IsTrue(deleteResult);
         }
 
-        [TestMethod]
-        public void Test_GetGenre_Fail()
-        {
-
-        }
         
         [TestMethod]
         public void Test_GetAlbumsFromGenres_Success()
         {
+            GenreEntity newGenre = new GenreEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", Genre_01 = "aaa", Genre_02 = "bbb", Genre_03 = "ccc" };
 
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            bool addResult = rds.AddGenreToGenreEntity(newGenre);
+            Assert.IsTrue(addResult);
+
+            IEnumerable<String> ge = rds.GetAlbumsFromGenres("aaa", "bbb", "ccc");
+            String g = ge.First<String>();
+            Assert.AreEqual(g, "Daveys Hits");
+
+            bool deleteResult = rds.DeleteGenreFromGenreEntity("Daveys Hits", "Dave Nolan");
+            Assert.IsTrue(deleteResult);
         }
 
 //  TRACK ENTITY TESTS
 
         [TestMethod]
-        public void Test_PostAddTrack_Success()
+        public void Test_PostAddAndDeleteTrack_Success()
         {
             TrackEntity newTrack = new TrackEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", NumberOfTracks = 5, Track_01_Title = "Track01", Track_02_Title = "Track02", Track_03_Title = "Track03", Track_04_Title = "Track04", Track_05_Title = "Track05" };
 
@@ -251,65 +260,55 @@ namespace UnitTests
             rds.DeleteTrackFromTrackEntity("Daveys Hits", "Dave Nolan");
         }
 
-        [TestMethod]
-        public void Test_PostAddTrack_Fail()
-        {
-            TrackEntity newTrack = new TrackEntity();
-
-            RecordCollectionDataSource rds = new RecordCollectionDataSource();
-            bool trackResult = rds.AddTrackToTrackEntity(newTrack);
-            Assert.IsFalse(trackResult);
-        }
-    
-        [TestMethod]
-        public void Test_DeleteTrack_Success()
-        {
-
-        }
-
-        [TestMethod]
-        public void Test_DeleteTrack_Fail()
-        {
-
-        }
-        
+                   
         [TestMethod]
         public void Test_PutTrack_Success()
         {
+            TrackEntity newTrack = new TrackEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", NumberOfTracks = 2, Track_01_Title = "track1", Track_02_Title = "track2", Track_03_Title = "", Track_04_Title = "", Track_05_Title = "" };
 
-        }
-
-        [TestMethod]
-        public void Test_PutTrack_Fail()
-        {
-
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            bool addResult = rds.AddTrackToTrackEntity(newTrack);
+            Assert.IsTrue(addResult);
+            bool putResult = rds.PutUpdateForTrack("Daveys Hits", "Dave Nolan", "TRACK1", "a different title");
+            Assert.IsTrue(putResult);
+            bool deleteResult = rds.DeleteTrackFromTrackEntity ("Daveys Hits", "Dave Nolan");
+            Assert.IsTrue(deleteResult);
         }
         
         [TestMethod]
         public void Test_GetAllTrack_Success()
         {
+            TrackEntity newTrack = new TrackEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", NumberOfTracks = 2, Track_01_Title = "track1", Track_02_Title = "track2", Track_03_Title = "", Track_04_Title = "", Track_05_Title = "" };
 
-        }
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            bool addResult = rds.AddTrackToTrackEntity(newTrack);
+            Assert.IsTrue(addResult);
 
-        [TestMethod]
-        public void Test_GetAllTrack_Fail()
-        {
+            IEnumerable<TrackEntity> tr = rds.GetTrackFromTrackEntity(true);
+            TrackEntity t = tr.First<TrackEntity>();
+            Assert.IsNotNull(t.Album);
 
+            bool deleteResult = rds.DeleteTrackFromTrackEntity("Daveys Hits", "Dave Nolan");
+            Assert.IsTrue(deleteResult);
         }
 
         [TestMethod]
         public void Test_GetTrackFromAlbum_Success()
         {
+            TrackEntity newTrack = new TrackEntity() { Artist = "Dave Nolan", Album = "Daveys Hits", NumberOfTracks = 2, Track_01_Title = "track1", Track_02_Title = "track2", Track_03_Title = "", Track_04_Title = "", Track_05_Title = "" };
 
-        }
+            RecordCollectionDataSource rds = new RecordCollectionDataSource();
+            bool addResult = rds.AddTrackToTrackEntity(newTrack);
+            Assert.IsTrue(addResult);
 
-        [TestMethod]
-        public void Test_GetTrackFromAlbum_Fail()
-        {
+            IEnumerable<String> tr = rds.GetTracksFromAlbum("Daveys Hits");
+            String t = tr.First<String>();
+            Assert.AreEqual(t, "Track 01: track1");
 
-        }
-        
-   
+            bool deleteResult = rds.DeleteTrackFromTrackEntity("Daveys Hits", "Dave Nolan");
+            Assert.IsTrue(deleteResult);
+
+        }  
     
     
     }

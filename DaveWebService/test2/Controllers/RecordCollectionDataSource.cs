@@ -213,19 +213,23 @@ namespace DaveWebService.Controllers
         }
 
     //  Genre Entity Queries
-        public void DeleteGenreFromGenreEntity(string albumToDelete, string byArtist)
+        public bool DeleteGenreFromGenreEntity(string albumToDelete, string byArtist)
         {
+            bool result = false;
             foreach (GenreEntity ge in from ges in this.context.GenreEntity where ges.PartitionKey == byArtist select ges)
             {
                 if (ge.Album.ToUpper().Equals(albumToDelete.ToUpper()))
                 {
                     this.context.DeleteObject(ge);
                     this.context.SaveChanges();
+                    result = true;
                 }
             }
+            return result;
         }
-        public void PutUpdateForGenre(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
+        public bool PutUpdateForGenre(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
         {
+            bool wasSuccessful = false;
             var result = from ge in this.context.GenreEntity where ge.PartitionKey == byArtist select ge;
             GenreEntity entityToUpdate = result.FirstOrDefault<GenreEntity>();
 
@@ -233,16 +237,18 @@ namespace DaveWebService.Controllers
             {
                 if (parameterToUpdate.ToUpper().Equals("ALBUM")) { GenreEntity updatedAlbum = new GenreEntity { Album = newValue, Artist = entityToUpdate.Artist, Genre_01 = entityToUpdate.Genre_01, Genre_02 = entityToUpdate.Genre_02, Genre_03 = entityToUpdate.Genre_03 }; this.DeleteGenreFromGenreEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddGenreToGenreEntity(updatedAlbum); this.context.SaveChanges(); }
                 if (parameterToUpdate.ToUpper().Equals("ARTIST")) { GenreEntity updatedAlbum = new GenreEntity { Album = entityToUpdate.Album, Artist = newValue, Genre_01 = entityToUpdate.Genre_01, Genre_02 = entityToUpdate.Genre_02, Genre_03 = entityToUpdate.Genre_03 }; this.DeleteGenreFromGenreEntity(entityToUpdate.Album, entityToUpdate.Artist); this.context.SaveChanges(); this.AddGenreToGenreEntity(updatedAlbum); this.context.SaveChanges(); }
-                if (parameterToUpdate.ToUpper().Equals("Genre_01")) { entityToUpdate.Genre_01 = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("Genre_02")) { entityToUpdate.Genre_02 = newValue; }
-                if (parameterToUpdate.ToUpper().Equals("Genre_03")) { entityToUpdate.Genre_03 = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("GENRE1")) { entityToUpdate.Genre_01 = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("GENRE2")) { entityToUpdate.Genre_02 = newValue; }
+                if (parameterToUpdate.ToUpper().Equals("GENRE3")) { entityToUpdate.Genre_03 = newValue; }
 
-                if (parameterToUpdate.ToUpper().Equals("Genre_01") || parameterToUpdate.ToUpper().Equals("Genre_02") || parameterToUpdate.ToUpper().Equals("Genre_03"))
+                if (parameterToUpdate.ToUpper().Equals("GENRE1") || parameterToUpdate.ToUpper().Equals("GENRE2") || parameterToUpdate.ToUpper().Equals("GENRE3"))
                 {
                     this.context.UpdateObject(entityToUpdate);
                     this.context.SaveChanges();
+                    wasSuccessful = true;
                 }
             }
+            return wasSuccessful;
         }
         public bool AddGenreToGenreEntity(GenreEntity newGenre)
         {
@@ -344,19 +350,23 @@ namespace DaveWebService.Controllers
         }
 
     //  Track Entity Queries
-        public void DeleteTrackFromTrackEntity(string albumToDelete, string byArtist)
+        public bool DeleteTrackFromTrackEntity(string albumToDelete, string byArtist)
         {
+            bool result = false;
             foreach (TrackEntity tr in from trs in this.context.TrackEntity where trs.PartitionKey == byArtist select trs)
             {
                 if (tr.Album.ToUpper().Equals(albumToDelete.ToUpper()))
                 {
                     this.context.DeleteObject(tr);
                     this.context.SaveChanges();
+                    result = true;
                 }
             }
+            return result;
         }
-        public void PutUpdateForTrack(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
+        public bool PutUpdateForTrack(string albumToUpdate, string byArtist, string parameterToUpdate, string newValue)
         {
+            bool wasSuccessful = false;
             var result = from tr in this.context.TrackEntity where tr.PartitionKey == byArtist select tr;
             TrackEntity entityToUpdate = result.FirstOrDefault<TrackEntity>();
 
@@ -375,8 +385,10 @@ namespace DaveWebService.Controllers
                 {
                     this.context.UpdateObject(entityToUpdate);
                     this.context.SaveChanges();
+                    wasSuccessful = true;
                 }
             }
+            return wasSuccessful;
         }
         public bool AddTrackToTrackEntity(TrackEntity newTrack)
         {
