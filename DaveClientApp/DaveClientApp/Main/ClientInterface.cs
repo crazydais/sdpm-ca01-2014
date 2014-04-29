@@ -19,7 +19,8 @@ namespace DaveClientApp.Main
                 
         public void Start()
         {
-            client.BaseAddress = new Uri("http://localhost:2454/");
+            //client.BaseAddress = new Uri("http://localhost:2454/");
+            client.BaseAddress = new Uri("http://davewebservice.cloudapp.net/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             bool run = true;
 
